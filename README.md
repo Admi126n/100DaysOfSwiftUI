@@ -12,3 +12,4 @@ In this project I'm going to follow [100 Days of Swift UI tutorial (challange)](
 - Day 6 - 14 Aug 2023 *(Checkpoint 3 compleated - FizzBuzz)*
 - Day 7 - 15 Aug 2023
 - Day 8 - 16 Aug 2023 *(Checkpoint 4 compleated)*
+- Day 9 - 17 Aug 2023 *(Checkpoint 5 compleated)*
