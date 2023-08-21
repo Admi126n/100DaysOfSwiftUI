@@ -3,7 +3,7 @@
 //  Checkpoint 7 from 100 Days Of Swift
 //  https://www.hackingwithswift.com/quick-start/beginners/checkpoint-7
 //
-//  Created by Adam on 10/08/2023.
+//  Created by Adam on 20/08/2023.
 //
 //  Goal for this checkpoit:
 //
