@@ -19,3 +19,4 @@ In this project I'm going to follow [100 Days of Swift UI tutorial (challange)](
 - Day 13 - 21 Aug 2023 *(Checkpoint 8 compleated)*
 - Day 14 - 22 Aug 2023 *(Checkpoint 9 compleated)*
 - Day 15 - 23 Aug 2023
+- Day 16 - 24 Aug 2023
