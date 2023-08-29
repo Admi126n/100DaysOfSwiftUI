@@ -24,3 +24,4 @@ In this project I'm going to follow [100 Days of Swift UI tutorial (challange)](
 - Day 18 - 26 Aug 2023 *(Project 1 compleated)*
 - Day 19 - 27 Aug 2023 *(Challange compleated)*
 - Day 20 - 28 Aug 2023
+- Day 21 - 29 Aug 2023

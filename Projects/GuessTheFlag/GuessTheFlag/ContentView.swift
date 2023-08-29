@@ -8,45 +8,78 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var showHelloAlert = false
-    @State private var showCustomAlert = false
+    @State private var showScore = false
+    @State private var scoreTitle = ""
+    @State private var countries = ["Estonia", "France", "Germany", "Ireland", "Italy",
+                             "Nigeria", "Poland", "Russia", "Spain", "UK", "US"].shuffled()
+    
+    @State private var correctAnswer = Int.random(in: 0...2)
     
     var body: some View {
         ZStack {
-            LinearGradient(stops: [.init(color: .green, location: 0.3),
-                .init(color: .blue, location: 0.7)],
-                           startPoint: .topLeading,
-                           endPoint: .bottomTrailing)
-            .ignoresSafeArea()
+            LinearGradient(colors: [.blue, .black], startPoint: .top, endPoint: .bottom)
+                .ignoresSafeArea()
             
-            VStack(spacing: 50) {
-                Text("Hello world!")
-                    .foregroundStyle(.secondary)
+            VStack {
+                Text("Guess the flag!")
+                    .font(.largeTitle)
+                    .foregroundColor(.white)
                 
-                Button("Click me") {
-                    showHelloAlert = true
-                }
-                .buttonStyle(.borderedProminent)
-                .tint(.gray)
-                .alert("Hello!", isPresented: $showHelloAlert) {
-                    Button("Hi!") { }
-                }
+                Spacer()
                 
-                Button {
-                    showCustomAlert = true
-                } label: {
-                    Label("Custom button", systemImage: "pencil")
+                VStack(spacing: 30) {
+                    VStack {
+                        Text("Tap the flag of")
+                            .foregroundColor(.white)
+                            .font(.subheadline.weight(.heavy))
+                        
+                        Text(countries[correctAnswer])
+                            .foregroundColor(.white)
+                            .font(.largeTitle.weight(.semibold))
+                    }
+                    
+                    ForEach(0..<3) { number in
+                        Button {
+                            flagTapped(number)
+                        } label: {
+                            Image(countries[number])
+                                .renderingMode(.original)
+                                .clipShape(RoundedRectangle(cornerRadius: 10))
+                                .shadow(radius: 5)
+                        }
+                    }
                 }
-                .alert("I'm more customized alert", isPresented: $showCustomAlert) {
-                    Button("Delete", role: .destructive) { }
-                    Button("Cancel", role: .cancel) { }
-                } message: {
-                    Text("I have two buttons")
-                }
+                .padding(20)
+                .background(.ultraThinMaterial)
+                .clipShape(RoundedRectangle(cornerRadius: 10))
+                
+                Spacer()
+                Spacer()
+                
+                Text("Your score: ???")
+                    .foregroundColor(.white)
             }
-            .padding(50)
-            .background(.ultraThinMaterial)
         }
+        .alert(scoreTitle, isPresented: $showScore) {
+            Button("Continue", action: askQuestion)
+        } message: {
+            Text("Your score is: ???")
+        }
+    }
+    
+    private func flagTapped(_ number: Int) {
+        if number == correctAnswer {
+            scoreTitle = "Correct"
+        } else {
+            scoreTitle = "Wrong"
+        }
+        
+        showScore = true
+    }
+    
+    private func askQuestion() {
+        countries.shuffle()
+        correctAnswer = Int.random(in: 0...2)
     }
 }
 
