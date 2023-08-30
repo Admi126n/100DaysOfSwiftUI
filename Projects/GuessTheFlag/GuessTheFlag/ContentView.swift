@@ -9,11 +9,15 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var showScore = false
+    @State private var gameEnded = false
     @State private var scoreTitle = ""
     @State private var countries = ["Estonia", "France", "Germany", "Ireland", "Italy",
                              "Nigeria", "Poland", "Russia", "Spain", "UK", "US"].shuffled()
     
     @State private var correctAnswer = Int.random(in: 0...2)
+    
+    @State private var score = 0
+    @State private var questionsCounter = 0
     
     var body: some View {
         ZStack {
@@ -56,30 +60,44 @@ struct ContentView: View {
                 Spacer()
                 Spacer()
                 
-                Text("Your score: ???")
+                Text("Your score: \(score)")
                     .foregroundColor(.white)
             }
         }
         .alert(scoreTitle, isPresented: $showScore) {
             Button("Continue", action: askQuestion)
+        }
+        .alert("Finish!", isPresented: $gameEnded) {
+            Button("Reset game", action: resetGame)
         } message: {
-            Text("Your score is: ???")
+            Text("You answered corrently to \(score) of 8 questions")
         }
     }
     
     private func flagTapped(_ number: Int) {
         if number == correctAnswer {
             scoreTitle = "Correct"
+            score += 1
+            askQuestion()
         } else {
-            scoreTitle = "Wrong"
+            scoreTitle = "Wrong! You tapped flag of \(countries[number])"
+            score -= 1
+            showScore = true
         }
-        
-        showScore = true
     }
     
     private func askQuestion() {
+        questionsCounter += 1
         countries.shuffle()
         correctAnswer = Int.random(in: 0...2)
+        
+        if questionsCounter == 8 {
+            gameEnded = true
+        }
+    }
+    
+    private func resetGame() {
+        score = 0
     }
 }
 
