@@ -21,16 +21,18 @@ In this project I'm going to follow [100 Days of Swift UI tutorial (challange)](
 - Day 15 - 23 Aug 2023
 - Day 16 - 24 Aug 2023
 - Day 17 - 25 Aug 2023
-- Day 18 - 26 Aug 2023 *(Project 1 compleated)*
-- Day 19 - 27 Aug 2023 *(Challange compleated)*
+- Day 18 - 26 Aug 2023 *(Project 1 compleated - WeSplit)*
+- Day 19 - 27 Aug 2023 *(Challange compleated - TemperatureConverter)*
 - Day 20 - 28 Aug 2023
 - Day 21 - 29 Aug 2023
-- Day 22 - 30 Aug 2023 *(Project 2 compleated)*
+- Day 22 - 30 Aug 2023 *(Project 2 compleated - GuessTheFlag)*
 - Day 23 - 31 Aug 2023
-- Day 24 - 1 Sep 2023 *(Project 3 compleated)*
-- Day 25 - 2 Sep 2023 *(Challange 2 compleated)*
+- Day 24 - 1 Sep 2023 *(Project 3 compleated - ViewsAndModifiers)*
+- Day 25 - 2 Sep 2023 *(Challange 2 compleated - RockPaperScissorsPuzzle)*
 - Day 26 - 3 Sep 2023
 - Day 27 - 11 Sep 2023
-- Day 28 - 12 Sep 2023 *(Project 4 compleated)*
+- Day 28 - 12 Sep 2023 *(Project 4 compleated - BetterRest)*
 - Day 29 - 13 Sep 2023
 - Day 30 - 14 Sep 2023
+- Day 31 - 15 Sep 2023 *(Project 5 compleated - WordScramble)*
+- Day 32 - 16 Sep 2023

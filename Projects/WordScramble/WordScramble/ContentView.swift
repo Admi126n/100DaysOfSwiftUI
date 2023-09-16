@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ContentView: View {
+    private let minimumWordLen = 3
+    
     @State private var usedWords: [String] = []
     @State private var rootWord = ""
     @State private var newWord = ""
@@ -15,6 +17,8 @@ struct ContentView: View {
     @State private var errorTitle = ""
     @State private var errorMessage = ""
     @State private var showError = false
+    
+    @State private var score = 0
     
     var body: some View {
         NavigationView {
@@ -36,6 +40,15 @@ struct ContentView: View {
             .navigationTitle(rootWord)
             .onSubmit(addNewWord)
             .onAppear(perform: startGame)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Text("Score: \(score)")
+                }
+                
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Reset game", action: startGame)
+                }
+            }
             .alert(errorTitle, isPresented: $showError) {
                 Button("OK", role: .cancel) { }
             } message: {
@@ -46,7 +59,15 @@ struct ContentView: View {
     
     private func addNewWord() {
         let answer = newWord.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
-        guard answer.count > 0 else { return }
+        guard answer.count >= minimumWordLen else {
+            wordError(title: "Word is too short", message: "Your answer heve to has at least \(minimumWordLen) characters!")
+            return
+        }
+        
+        guard answer != rootWord else {
+            wordError(title: "Word is an original word", message: "You typed original word!")
+            return
+        }
         
         guard isOriginal(word: answer) else {
             wordError(title: "Word used already", message: "Be more original!")
@@ -65,12 +86,20 @@ struct ContentView: View {
         
         withAnimation {
             usedWords.insert(answer, at: 0)
+            addScore(word: answer)
         }
         
         newWord = ""
     }
     
+    private func addScore(word: String) {
+        score += word.count
+    }
+    
     private func startGame() {
+        usedWords = []
+        score = 0
+        
         if let startWordsURL = Bundle.main.url(forResource: "start", withExtension: "txt") {
             if let startWords = try? String(contentsOf: startWordsURL) {
                 let allWords = startWords.components(separatedBy: "\n")
@@ -113,6 +142,7 @@ struct ContentView: View {
     }
     
     private func wordError(title: String, message: String) {
+        newWord = ""
         errorTitle = title
         errorMessage = message
         showError = true
