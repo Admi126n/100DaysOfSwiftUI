@@ -23,6 +23,8 @@ fileprivate struct FlagImage: View {
 }
 
 struct ContentView: View {
+    private let animationDuration = 0.5
+    
     @State private var showScore = false
     @State private var gameEnded = false
     @State private var scoreTitle = ""
@@ -33,6 +35,10 @@ struct ContentView: View {
     
     @State private var score = 0
     @State private var questionsCounter = 0
+    
+    @State private var animationAmount = 0.0
+    @State private var tappedFlag = 0
+    @State private var fade = false
     
     var body: some View {
         ZStack {
@@ -59,10 +65,21 @@ struct ContentView: View {
                     
                     ForEach(0..<3) { number in
                         Button {
-                            flagTapped(number)
+                            tappedFlag = number
+                            withAnimation(.easeIn(duration: animationDuration)) {
+                                animationAmount += 360
+                                flagTapped(number)
+                            }
+                            
+                            
                         } label: {
                             FlagImage(ofCountry: countries[number])
                         }
+                        .rotation3DEffect(tappedFlag == number ? .degrees(animationAmount) : .degrees(0), axis: (x: 1, y: 0, z: 0))
+                        .opacity(fade && tappedFlag != number ? 0.25 : 1)
+                        .scaleEffect(fade && tappedFlag != number ? 0.3 : 1)
+                        
+                        
                     }
                 }
                 .padding(20)
@@ -77,20 +94,36 @@ struct ContentView: View {
             }
         }
         .alert(scoreTitle, isPresented: $showScore) {
-            Button("Continue", action: askQuestion)
+            Button("Continue") {
+                withAnimation {
+                    askQuestion()
+                }
+            }
         }
         .alert("Finish!", isPresented: $gameEnded) {
-            Button("Reset game", action: resetGame)
+            Button("Reset game") {
+                withAnimation {
+                    askQuestion()
+                }
+            }
         } message: {
             Text("You answered corrently to \(score) of 8 questions")
         }
     }
     
     private func flagTapped(_ number: Int) {
+        fade = true
+        
         if number == correctAnswer {
             scoreTitle = "Correct"
             score += 1
-            askQuestion()
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + animationDuration * 2) {
+                withAnimation {
+                    askQuestion()
+                }
+                
+            }
         } else {
             scoreTitle = "Wrong! You tapped flag of \(countries[number])"
             score -= 1
@@ -99,6 +132,8 @@ struct ContentView: View {
     }
     
     private func askQuestion() {
+        fade = false
+        
         questionsCounter += 1
         countries.shuffle()
         correctAnswer = Int.random(in: 0...2)
