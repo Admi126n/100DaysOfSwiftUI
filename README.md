@@ -38,3 +38,4 @@ In this project I'm going to follow [100 Days of Swift UI tutorial (challange)](
 - Day 32 - 16 Sep 2023
 - Day 33 - 17 Sep 2023
 - Day 34 - 18 Sep 2023 *(Project 6 compleated - Animations)*
+- Day 35 - 19 Sep 2023 *(Challange 3 - Multiply)*
