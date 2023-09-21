@@ -11,6 +11,9 @@
 		666AE8A32ABB222C00977EB4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 666AE8A22ABB222C00977EB4 /* ContentView.swift */; };
 		666AE8A52ABB222D00977EB4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 666AE8A42ABB222D00977EB4 /* Assets.xcassets */; };
 		666AE8A82ABB222D00977EB4 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 666AE8A72ABB222D00977EB4 /* Preview Assets.xcassets */; };
+		669EFEDD2ABCC6710063E86D /* ExpenseItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669EFEDC2ABCC6710063E86D /* ExpenseItem.swift */; };
+		669EFEDF2ABCC6B40063E86D /* Expenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669EFEDE2ABCC6B40063E86D /* Expenses.swift */; };
+		669EFEE12ABCCA9C0063E86D /* AddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669EFEE02ABCCA9C0063E86D /* AddView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +22,9 @@
 		666AE8A22ABB222C00977EB4 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		666AE8A42ABB222D00977EB4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		666AE8A72ABB222D00977EB4 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		669EFEDC2ABCC6710063E86D /* ExpenseItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseItem.swift; sourceTree = "<group>"; };
+		669EFEDE2ABCC6B40063E86D /* Expenses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Expenses.swift; sourceTree = "<group>"; };
+		669EFEE02ABCCA9C0063E86D /* AddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +59,9 @@
 			children = (
 				666AE8A02ABB222C00977EB4 /* iExpenseApp.swift */,
 				666AE8A22ABB222C00977EB4 /* ContentView.swift */,
+				669EFEE02ABCCA9C0063E86D /* AddView.swift */,
+				669EFEDC2ABCC6710063E86D /* ExpenseItem.swift */,
+				669EFEDE2ABCC6B40063E86D /* Expenses.swift */,
 				666AE8A42ABB222D00977EB4 /* Assets.xcassets */,
 				666AE8A62ABB222D00977EB4 /* Preview Content */,
 			);
@@ -95,7 +104,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1430;
-				LastUpgradeCheck = 1430;
+				LastUpgradeCheck = 1500;
 				TargetAttributes = {
 					666AE89C2ABB222C00977EB4 = {
 						CreatedOnToolsVersion = 14.3.1;
@@ -137,7 +146,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				669EFEDF2ABCC6B40063E86D /* Expenses.swift in Sources */,
 				666AE8A32ABB222C00977EB4 /* ContentView.swift in Sources */,
+				669EFEE12ABCCA9C0063E86D /* AddView.swift in Sources */,
+				669EFEDD2ABCC6710063E86D /* ExpenseItem.swift in Sources */,
 				666AE8A12ABB222C00977EB4 /* iExpenseApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -181,6 +193,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -241,6 +254,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
