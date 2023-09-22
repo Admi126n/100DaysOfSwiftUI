@@ -41,3 +41,4 @@ In this project I'm going to follow [100 Days of Swift UI tutorial (challange)](
 - Day 35 - 19 Sep 2023 *(Challange 3 compleated - Multiply)*
 - Day 36 - 20 Sep 2023
 - Day 37 - 21 Sep 2023
+- Day 38 - 22 Sep 2023 *(Project 7 compleated - iExpense)*

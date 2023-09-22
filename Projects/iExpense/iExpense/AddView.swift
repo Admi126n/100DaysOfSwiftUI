@@ -8,37 +8,54 @@
 import SwiftUI
 
 struct AddView: View {
-    @ObservedObject var expenses: Expenses
-    
     @Environment(\.dismiss) var dismiss
     
-    @State private var name = ""
-    @State private var type = "Personal"
-    @State private var amount = 0.0
+    @ObservedObject var expenses: Expenses
     
-    let types = ["Buisness", "Personal"]
+    @State private var name = ""
+    @State private var amount = 0.0
+    @State private var type = ExpenseType.personal
+    
+    @State private var showAlert = false
+    @State private var alertTitle = ""
     
     var body: some View {
         NavigationView {
             Form {
                 TextField("Name", text: $name)
+                    .textInputAutocapitalization(.sentences)
                 
                 Picker("Type", selection: $type) {
-                    ForEach(types, id: \.self) {
-                        Text($0)
+                    ForEach(ExpenseType.allCases, id: \.self) {
+                        Text($0.rawValue)
                     }
                 }
                 
-                TextField("Amount", value: $amount, format: .currency(code: "USD"))
+                TextField("Amount", value: $amount, format: Expenses.currencyFormat)
                     .keyboardType(.decimalPad)
             }
             .navigationTitle("Add new expense")
             .toolbar {
                 Button("Save") {
-                    let item = ExpenseItem(name: name, type: type, amount: amount)
-                    expenses.items.append(item)
+                    guard !name.isEmpty else {
+                        alertTitle = "Name cannot be empty!"
+                        showAlert = true
+                        return
+                    }
+                    
+                    guard amount != 0.0 else {
+                        alertTitle = "Amount cannot equal 0!"
+                        showAlert = true
+                        return
+                    }
+                    
+                    let item = ExpenseItem(name: name, type: type.rawValue, amount: amount)
+                    expenses.addExpense(item)
                     dismiss()
                 }
+            }
+            .alert(alertTitle, isPresented: $showAlert) {
+                Button("OK") { }
             }
         }
     }

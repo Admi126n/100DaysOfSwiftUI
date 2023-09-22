@@ -11,6 +11,7 @@
 		666AE8A32ABB222C00977EB4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 666AE8A22ABB222C00977EB4 /* ContentView.swift */; };
 		666AE8A52ABB222D00977EB4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 666AE8A42ABB222D00977EB4 /* Assets.xcassets */; };
 		666AE8A82ABB222D00977EB4 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 666AE8A72ABB222D00977EB4 /* Preview Assets.xcassets */; };
+		667EF8672ABDC1560028F708 /* ExpenseType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 667EF8662ABDC1560028F708 /* ExpenseType.swift */; };
 		669EFEDD2ABCC6710063E86D /* ExpenseItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669EFEDC2ABCC6710063E86D /* ExpenseItem.swift */; };
 		669EFEDF2ABCC6B40063E86D /* Expenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669EFEDE2ABCC6B40063E86D /* Expenses.swift */; };
 		669EFEE12ABCCA9C0063E86D /* AddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669EFEE02ABCCA9C0063E86D /* AddView.swift */; };
@@ -22,6 +23,7 @@
 		666AE8A22ABB222C00977EB4 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		666AE8A42ABB222D00977EB4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		666AE8A72ABB222D00977EB4 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		667EF8662ABDC1560028F708 /* ExpenseType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseType.swift; sourceTree = "<group>"; };
 		669EFEDC2ABCC6710063E86D /* ExpenseItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseItem.swift; sourceTree = "<group>"; };
 		669EFEDE2ABCC6B40063E86D /* Expenses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Expenses.swift; sourceTree = "<group>"; };
 		669EFEE02ABCCA9C0063E86D /* AddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddView.swift; sourceTree = "<group>"; };
@@ -60,6 +62,7 @@
 				666AE8A02ABB222C00977EB4 /* iExpenseApp.swift */,
 				666AE8A22ABB222C00977EB4 /* ContentView.swift */,
 				669EFEE02ABCCA9C0063E86D /* AddView.swift */,
+				667EF8662ABDC1560028F708 /* ExpenseType.swift */,
 				669EFEDC2ABCC6710063E86D /* ExpenseItem.swift */,
 				669EFEDE2ABCC6B40063E86D /* Expenses.swift */,
 				666AE8A42ABB222D00977EB4 /* Assets.xcassets */,
@@ -148,6 +151,7 @@
 			files = (
 				669EFEDF2ABCC6B40063E86D /* Expenses.swift in Sources */,
 				666AE8A32ABB222C00977EB4 /* ContentView.swift in Sources */,
+				667EF8672ABDC1560028F708 /* ExpenseType.swift in Sources */,
 				669EFEE12ABCCA9C0063E86D /* AddView.swift in Sources */,
 				669EFEDD2ABCC6710063E86D /* ExpenseItem.swift in Sources */,
 				666AE8A12ABB222C00977EB4 /* iExpenseApp.swift in Sources */,

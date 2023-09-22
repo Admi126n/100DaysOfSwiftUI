@@ -15,20 +15,19 @@ struct ContentView: View {
     var body: some View {
         NavigationView {
             List {
-                ForEach(expenses.items) { item in
-                    HStack {
-                        VStack(alignment: .leading) {
-                            Text(item.name)
-                            
-                            Text(item.type)
-                        }
-                        
-                        Spacer()
-                        
-                        Text(item.amount, format: .currency(code: "USD"))
+                Section(ExpenseType.personal.rawValue) {
+                    ForEach(expenses.personalItems) {
+                        ExpenseCell(item: $0)
                     }
+                    .onDelete(perform: removePersonalItems)
                 }
-                .onDelete(perform: removeItems)
+                
+                Section(ExpenseType.buisness.rawValue) {
+                    ForEach(expenses.buisnessItems) {
+                        ExpenseCell(item: $0)
+                    }
+                    .onDelete(perform: removeBuisnessItems)
+                }
             }
             .navigationTitle("iExpense")
             .toolbar {
@@ -44,13 +43,73 @@ struct ContentView: View {
         }
     }
     
-    private func removeItems(at offsets: IndexSet) {
-        expenses.items.remove(atOffsets: offsets)
+    private func removePersonalItems(at offsets: IndexSet) {
+        expenses.removePersonalExpense(at: offsets)
+    }
+    
+    private func removeBuisnessItems(at offsets: IndexSet) {
+        expenses.removeBuisnessExpense(at: offsets)
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
+    }
+}
+
+// MARK: - Custom Views
+
+fileprivate struct ExpenseCell: View {
+    let item: ExpenseItem
+    
+    var body: some View {
+        HStack {
+            VStack(alignment: .leading, spacing: 3) {
+                Text(item.name)
+                    .bold()
+                
+                Text(item.type)
+            }
+            
+            Spacer()
+            
+            Text(item.amount, format: Expenses.currencyFormat)
+                .amountStyle(for: item.amount)
+        }
+    }
+}
+
+// MARK: - Custom View Modifiers
+
+fileprivate struct ExpenseCellColor: ViewModifier {
+    private let amount: Double
+    
+    init(for amount: Double) {
+        self.amount = amount
+    }
+    
+    private var color: Color {
+        switch amount {
+        case ...10:
+            return .green
+        case ...100:
+            return .yellow
+        default:
+            return .red
+        }
+    }
+    
+    func body(content: Content) -> some View {
+        content
+            .foregroundStyle(color)
+    }
+}
+
+// MARK: - Custom View extensions
+
+extension View {
+    func amountStyle(for amount: Double) -> some View {
+        modifier(ExpenseCellColor(for: amount))
     }
 }
