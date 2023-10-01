@@ -47,3 +47,4 @@ In this project I'm going to follow [100 Days of Swift UI tutorial (challange)](
 - Day 41 - 25 Sep 2023
 - Day 42 - 30 Sep 2023 *(Project 8 compleated - Moonshot)*
 - Day 43 - 1 Oct 2023
+- Day 44 - 2 Oct 2023
