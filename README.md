@@ -22,7 +22,7 @@ In this project I'm going to follow [100 Days of Swift UI tutorial (challange)](
 - Day 16 - 24 Aug 2023
 - Day 17 - 25 Aug 2023
 - Day 18 - 26 Aug 2023 *(Project 1 compleated - WeSplit)*
-- Day 19 - 27 Aug 2023 *(Challange compleated - TemperatureConverter)*
+- Day 19 - 27 Aug 2023 *(Challange 1 compleated - TemperatureConverter)*
 - Day 20 - 28 Aug 2023
 - Day 21 - 29 Aug 2023
 - Day 22 - 30 Aug 2023 *(Project 2 compleated - GuessTheFlag)*
@@ -50,3 +50,4 @@ In this project I'm going to follow [100 Days of Swift UI tutorial (challange)](
 - Day 44 - 2 Oct 2023
 - Day 45 - 3 Oct 2023
 - Day 46 - 4 Oct 2023 *(Project 9 compleated - Drawing)*
+- Day 47 - 5 Oct 2023 *(Challange 4 compleated - iActivity)*
