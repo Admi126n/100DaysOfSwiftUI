@@ -9,8 +9,9 @@ import SwiftUI
 
 struct CheckoutView: View {
     @ObservedObject var order: Order
-    @State private var confirmationMessage = ""
-    @State private var showConfirmation = false
+    @State private var alertTitle = ""
+    @State private var alertMessage = ""
+    @State private var showAlert = false
     
     var body: some View {
         ScrollView {
@@ -26,7 +27,7 @@ struct CheckoutView: View {
                 }
                 .frame(height: 233)
                 
-                Text("Your total is \(order.cost, format: .currency(code: "USD"))")
+                Text("Your total is \(order.item.cost, format: .currency(code: "USD"))")
                     .font(.title)
                 
                 Button("Place order") {
@@ -39,10 +40,10 @@ struct CheckoutView: View {
         }
         .navigationTitle("Check out")
         .navigationBarTitleDisplayMode(.inline)
-        .alert("Thank you!", isPresented: $showConfirmation) {
+        .alert(alertTitle, isPresented: $showAlert) {
             Button("OK") { }
         } message: {
-            Text(confirmationMessage)
+            Text(alertMessage)
         }
     }
     
@@ -60,13 +61,18 @@ struct CheckoutView: View {
         do {
             let (data, _) = try await URLSession.shared.upload(for: request, from: encoded)
             let decodedOrder = try JSONDecoder().decode(Order.self, from: data)
-            confirmationMessage = """
-            Your order for \(decodedOrder.quantity) x \
-            \(Order.types[decodedOrder.type].lowercased()) cupcakes is on its way
+            alertTitle = "Thank You!"
+            alertMessage = """
+            Your order for \(decodedOrder.item.quantity) x \
+            \(OrderItem.types[decodedOrder.item.type].lowercased()) cupcakes is on its way
             """
-            showConfirmation = true
+            showAlert = true
             
         } catch {
+            alertTitle = "Something went wrong"
+            alertMessage = "Check your internet connection"
+            showAlert = true
+            
             print("Checkout failed")
             print(error)
         }

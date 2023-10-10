@@ -55,3 +55,4 @@ In this project I'm going to follow [100 Days of Swift UI tutorial (challange)](
 - Day 49 - 7 Oct 2023
 - Day 50 - 8 Oct 2023
 - Day 51 - 9 Oct 2023
+- Day 51 - 10 Oct 2023
