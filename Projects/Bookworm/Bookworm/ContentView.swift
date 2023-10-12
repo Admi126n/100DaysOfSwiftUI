@@ -7,71 +7,49 @@
 
 import SwiftUI
 
-struct PushButton: View {
-    let title: String
-    @Binding var isOn: Bool
-    
-    var onColors = [Color.red, Color.yellow]
-    var offColors = [Color(white: 0.6), Color(white: 0.4)]
-    
-    var body: some View {
-        Button(title) {
-            isOn.toggle()
-        }
-        .padding()
-        .background(
-            LinearGradient(colors: isOn ? onColors : offColors, startPoint: .top, endPoint: .bottom)
-        )
-        .foregroundStyle(.white)
-        .clipShape(Capsule())
-        .shadow(radius: isOn ? 0 : 5)
-    }
-}
-
 struct ContentView: View {
     @Environment(\.managedObjectContext) var moc
-    @FetchRequest(sortDescriptors: []) var students: FetchedResults<Student>
+    @FetchRequest(sortDescriptors: []) var books: FetchedResults<Book>
+    
+    @State private var showAddScreen = false
     
     var body: some View {
-        VStack {
-            List(students) { student in
-                Text(student.name ?? "Unknown")
+        NavigationStack {
+            List {
+                ForEach(books) { book in
+                    NavigationLink {
+                        Text(book.title ?? "Unknown")
+                    } label: {
+                        HStack {
+                            EmojiRatingView(rating: book.rating)
+                                .font(.largeTitle)
+                            
+                            VStack(alignment: .leading) {
+                                Text(book.title ?? "Unknown title")
+                                    .font(.headline)
+                                
+                                Text(book.author ?? "Unknown author")
+                                    .foregroundStyle(.secondary)
+                            }
+                        }
+                    }
+                }
             }
-            
-            Button("Add") {
-                let firstNames = ["Ginny", "Hary", "Hermione", "Luna", "Ron"]
-                let laseNames = ["Granger", "Lovegood", "Potter", "Weasly"]
-                
-                let chosenFirstName = firstNames.randomElement()!
-                let chosenLastName = laseNames.randomElement()!
-                
-                let student = Student(context: moc)
-                student.id = UUID()
-                student.name = "\(chosenFirstName) \(chosenLastName)"
-                
-                try? moc.save()
+            .navigationTitle("Bookworm")
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        showAddScreen.toggle()
+                    } label: {
+                        Label("Add Book", systemImage: "plus")
+                    }
+                }
+            }
+            .sheet(isPresented: $showAddScreen) {
+                AddBookView()
             }
         }
     }
-    
-// 2
-//    @AppStorage("notes") private var notes = ""
-//    var body: some View {
-//        NavigationStack {
-//            TextEditor(text: $notes)
-//                .navigationTitle("Notes")
-//                .padding()
-//        }
-//    }
-    
-// 1
-//    @State private var rememberMe = false
-//    var body: some View {
-//        VStack {
-//            PushButton(title: "Rember me", isOn: $rememberMe)
-//            Text(rememberMe ? "On" : "Off")
-//        }
-//    }
 }
 
 #Preview {
