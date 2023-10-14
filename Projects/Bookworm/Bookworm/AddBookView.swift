@@ -19,6 +19,10 @@ struct AddBookView: View {
     
     let geners = ["Fantasy", "Horror", "Kids", "Mystery", "Poetry", "Romance", "Thiller"]
     
+    var formIsValid: Bool {
+        return !(genre.isEmpty || title.isEmpty)
+    }
+    
     var body: some View {
         NavigationStack {
             Form {
@@ -39,21 +43,31 @@ struct AddBookView: View {
                 
                 Section {
                     Button("Save") { 
-                        let newBook = Book(context: moc)
-                        newBook.id = UUID()
-                        newBook.title = title
-                        newBook.author = author
-                        newBook.rating = Int16(rating)
-                        newBook.genre = genre
-                        newBook.review = review
-                        
-                        try? moc.save()
-                        dismiss()
+                        addBook()
                     }
+                    .disabled(!formIsValid)
                 }
             }
             .navigationTitle("Add book")
         }
+    }
+    
+    private func addBook() {
+        if author.isEmpty {
+            author = "Unknown author"
+        }
+        
+        let newBook = Book(context: moc)
+        newBook.id = UUID()
+        newBook.title = title
+        newBook.author = author
+        newBook.rating = Int16(rating)
+        newBook.genre = genre
+        newBook.review = review
+        newBook.date = Date.now
+        
+        try? moc.save()
+        dismiss()
     }
 }
 
