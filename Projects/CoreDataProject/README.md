@@ -1,4 +1,4 @@
-# Core Date project
+# Core Data project
 This technique project is going to explore Core Data in more detail, starting with a summary of some basic techniques then building up to tackling some more complex problems.
 
 #### Project pages

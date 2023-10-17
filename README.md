@@ -62,3 +62,4 @@ In this project I'm going to follow [100 Days of Swift UI tutorial (challange)](
 - Day 56 - 14 Oct 2023 *(Project 11 compleated - Bookworm)*
 - Day 57 - 15 Oct 2023
 - Day 58 - 16 Oct 2023
+- Day 59 - 17 Oct 2023 *(Project 12 compleated - Core data project)*
