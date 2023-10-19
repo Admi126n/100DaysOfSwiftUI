@@ -1,4 +1,6 @@
 # Friends
+
+#### Part 1
 It’s time for you to build an app from scratch, and it’s a particularly expansive challenge today: your job is to use URLSession to download some JSON from the internet, use Codable to convert it to Swift types, then use NavigationStack, List, and more to display it to the user.
 
 Your first step should be to examine the JSON. The URL you want to use is this: https://www.hackingwithswift.com/samples/friendface.json – that’s a massive collection of randomly generated data for example users.
@@ -11,5 +13,9 @@ How far you implement this is down to you, but at the very least you should:
 - Create a detail view shown when a user is tapped, presenting more information about them, including the names of their friends.
 - Before you start your download, check that your User array is empty so that you don’t keep starting the download every time the view is shown.
 
+#### Part 2
+Your job today is to expand your app so that it uses Core Data. Your boss just emailed you to say the app is great, but once the JSON has been fetched they really want it to work offline. This means you need to use Core Data to store the information you download, then use your Core Data entities to display the views you designed – you should only need to fetch the data once. You still need to try to fetch the data every time your app loads, just in case it has changed somehow, but if that fetch fails it’s okay because you still have your Core Data back up.
+
 #### Project page
 - https://www.hackingwithswift.com/guide/ios-swiftui/5/3/challenge
+- https://www.hackingwithswift.com/100/swiftui/61
