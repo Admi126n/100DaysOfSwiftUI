@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		66569A8E2AE440D100A066FF /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66569A8D2AE440D100A066FF /* ImagePicker.swift */; };
 		66D866AA2AE26781008E81B5 /* InstafilterApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D866A92AE26781008E81B5 /* InstafilterApp.swift */; };
 		66D866AC2AE26781008E81B5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D866AB2AE26781008E81B5 /* ContentView.swift */; };
 		66D866AE2AE26782008E81B5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 66D866AD2AE26782008E81B5 /* Assets.xcassets */; };
@@ -14,6 +15,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		66569A8D2AE440D100A066FF /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		66D866A62AE26781008E81B5 /* Instafilter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Instafilter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		66D866A92AE26781008E81B5 /* InstafilterApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstafilterApp.swift; sourceTree = "<group>"; };
 		66D866AB2AE26781008E81B5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -35,6 +37,7 @@
 		66D8669D2AE26781008E81B5 = {
 			isa = PBXGroup;
 			children = (
+				66569A8D2AE440D100A066FF /* ImagePicker.swift */,
 				66D866A82AE26781008E81B5 /* Instafilter */,
 				66D866A72AE26781008E81B5 /* Products */,
 			);
@@ -137,6 +140,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				66569A8E2AE440D100A066FF /* ImagePicker.swift in Sources */,
 				66D866AC2AE26781008E81B5 /* ContentView.swift in Sources */,
 				66D866AA2AE26781008E81B5 /* InstafilterApp.swift in Sources */,
 			);

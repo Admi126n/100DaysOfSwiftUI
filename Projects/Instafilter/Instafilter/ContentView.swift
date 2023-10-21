@@ -5,53 +5,69 @@
 //  Created by Adam Tokarski on 20/10/2023.
 //
 
+//import CoreImage  // 1
+//import CoreImage.CIFilterBuiltins  // 1
 import SwiftUI
 
 struct ContentView: View {
-    @State private var showDialog = false
-    @State private var backgroundColor = Color.white
+    @State private var image: Image?
+    @State private var showImagePicker = false
     
     var body: some View {
-        Text("Hello world")
-            .frame(width: 300, height: 300)
-            .background(backgroundColor)
-            .onTapGesture {
-                showDialog = true
+        VStack {
+            image?
+                .resizable()
+                .scaledToFit()
+            
+            Button("Select Image") {
+                showImagePicker = true
             }
-            .confirmationDialog("Change background", isPresented: $showDialog) {
-                Button("Red") { backgroundColor = .red }
-                Button("Green") { backgroundColor = .green }
-                Button("Blue") { backgroundColor = .blue }
-                Button("Cancel", role: .cancel) { }
-            } message: {
-                Text("Select a new color")
-            }
+        }
+        .sheet(isPresented: $showImagePicker) {
+            ImagePicker()
+        }
     }
     
 // 1
-//    @State private var blurAmount = 0.0
+//    @State private var image: Image?
 //    var body: some View {
 //        VStack {
-//            Image(systemName: "globe")
-//                .imageScale(.large)
-//                .foregroundStyle(.tint)
-//                .blur(radius: blurAmount)
-//            
-//            Text("Hello, world!")
-//                .blur(radius: blurAmount)
-//            
-//            Slider(value: $blurAmount, in: 0...20)
-//                .onChange(of: blurAmount) {
-//                    print("New value is \(blurAmount)")
-//                }
-//            
-//            Button("Random blur") {
-//                withAnimation {
-//                    blurAmount = Double.random(in: 0...20)
-//                }
-//            }
+//            image?
+//                .resizable()
+//                .scaledToFit()
 //        }
-//        .padding()
+//        .onAppear(perform: loadImage)
+//    }
+//    private func loadImage() {
+//        guard let inputImage = UIImage(named: "Icon") else { return }
+//        let beginImage = CIImage(image: inputImage)
+//        
+//        let context = CIContext()
+////        let currentFilter = CIFilter.sepiaTone()  // 1
+////        let currentFilter = CIFilter.pixellate()  // 2
+//        let currentFilter = CIFilter.crystallize()  // 3
+////        let currentFilter = CIFilter.twirlDistortion()  // 4
+//        currentFilter.inputImage = beginImage
+//        
+//        let amount = 1.0
+//        let inputKeys = currentFilter.inputKeys
+//        if inputKeys.contains(kCIInputIntensityKey) {
+//            currentFilter.setValue(amount, forKey: kCIInputIntensityKey)
+//        }
+//        
+////        currentFilter.intensity = 1  // 1
+////        currentFilter.scale = 20  // 2
+//        currentFilter.radius = 10  // 3
+////        currentFilter.radius = 100  // 4
+////        currentFilter.center = CGPoint(x: inputImage.size.width / 2, y: inputImage.size.height / 2)  // 4
+//        
+//        guard let outputImage = currentFilter.outputImage else { return }
+//        
+//        if let cgImage = context.createCGImage(outputImage, from: outputImage.extent) {
+//            let uiImage = UIImage(cgImage: cgImage)
+//            
+//            image = Image(uiImage: uiImage)
+//        }
 //    }
 }
 

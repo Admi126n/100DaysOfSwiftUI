@@ -66,3 +66,4 @@ In this project I'm going to follow [100 Days of Swift UI tutorial (challange)](
 - Day 60 - 18 Oct 2023 *(Challange 5 part 1 compleated - Friends)*
 - Day 61 - 19 Oct 2023 *(Challange 5 part 2 compleated - Friends)*
 - Day 62 - 20 Oct 2023
+- Day 63 - 21 Oct 2023
