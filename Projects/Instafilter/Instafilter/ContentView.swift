@@ -15,9 +15,12 @@ struct ContentView: View {
 	
 	@State private var showImagePicker = false
 	@State private var inputImage: UIImage?
+	@State private var processedImage: UIImage?
 	
-	@State private var currentFilter = CIFilter.sepiaTone()
+	@State private var currentFilter: CIFilter = CIFilter.sepiaTone()
 	let context = CIContext()
+	
+	@State private var showFilterSheet = false
 	
 	var body: some View {
 		NavigationStack {
@@ -47,9 +50,7 @@ struct ContentView: View {
 				.padding(.vertical)
 				
 				HStack {
-					Button("Change filter") {
-						// change filter
-					}
+					Button("Change filter") { showFilterSheet = true }
 					
 					Spacer()
 					
@@ -63,30 +64,68 @@ struct ContentView: View {
 				ImagePicker(image: $inputImage)
 					.ignoresSafeArea()
 			}
+			.confirmationDialog("Select a filter", isPresented: $showFilterSheet) {
+				Button("Crystallize") { setFilter(CIFilter.crystallize()) }
+				Button("Edges") { setFilter(CIFilter.edges()) }
+				Button("Gaussian Blur") { setFilter(CIFilter.gaussianBlur()) }
+				Button("Pixellate") { setFilter(CIFilter.pixellate()) }
+				Button("Sepia Tone") { setFilter(CIFilter.sepiaTone()) }
+				Button("Unsharp Mask") { setFilter(CIFilter.unsharpMask()) }
+				Button("Vignette") { setFilter(CIFilter.vignette()) }
+				Button("X Ray") { setFilter(CIFilter.xRay()) }
+				Button("Cancel", role: .cancel) { }
+			}
 		}
 	}
 		
 	private func loadImage() {
 		guard let inputImage = inputImage else { return }
 		
-		let beginImagee = CIImage(image: inputImage)
-		currentFilter.setValue(beginImagee, forKey: kCIInputImageKey)
+		let beginImage = CIImage(image: inputImage)
+		currentFilter.setValue(beginImage, forKey: kCIInputImageKey)
 		applyProcessing()
 	}
 	
 	private func save() {
+		guard let processedImage = processedImage else { return }
 		
+		let imageSaver = ImageSaver()
+		imageSaver.successHandler = {
+			print("Succes")
+		}
+		
+		imageSaver.errorHandler = {
+			print("Oops!, \($0.localizedDescription)")
+		}
+		
+		imageSaver.writeToPhotoAlbum(image: processedImage)
 	}
 	
 	private func applyProcessing() {
-		currentFilter.intensity = Float(filterIntensity)
+		let inputKeys = currentFilter.inputKeys
+		
+		if inputKeys.contains(kCIInputIntensityKey) {
+			currentFilter.setValue(filterIntensity, forKey: kCIInputIntensityKey)
+		}
+		if inputKeys.contains(kCIInputRadiusKey) {
+			currentFilter.setValue(filterIntensity * 200, forKey: kCIInputRadiusKey)
+		}
+		if inputKeys.contains(kCIInputScaleKey) {
+			currentFilter.setValue(filterIntensity * 10, forKey: kCIInputScaleKey)
+		}
 		
 		guard let outputImage = currentFilter.outputImage else { return }
 		
 		if let cgImage = context.createCGImage(outputImage, from: outputImage.extent) {
 			let uiImage = UIImage(cgImage: cgImage)
 			image = Image(uiImage: uiImage)
+			processedImage = uiImage
 		}
+	}
+	
+	private func setFilter(_ filter: CIFilter) {
+		currentFilter = filter
+		loadImage()
 	}
 }
 
