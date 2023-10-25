@@ -12,6 +12,7 @@ import SwiftUI
 struct ContentView: View {
 	@State private var image: Image?
 	@State private var filterIntensity = 0.5
+	@State private var filterRadius = 0.5
 	
 	@State private var showImagePicker = false
 	@State private var inputImage: UIImage?
@@ -21,6 +22,11 @@ struct ContentView: View {
 	let context = CIContext()
 	
 	@State private var showFilterSheet = false
+	
+	var disableSaveButton: Bool {
+		if let _ = image { return false }
+		return true
+	}
 	
 	var body: some View {
 		NavigationStack {
@@ -50,11 +56,20 @@ struct ContentView: View {
 				.padding(.vertical)
 				
 				HStack {
+					Text("Radius")
+					
+					Slider(value: $filterRadius)
+						.onChange(of: filterRadius) { applyProcessing() }
+				}
+				.padding(.vertical)
+				
+				HStack {
 					Button("Change filter") { showFilterSheet = true }
 					
 					Spacer()
 					
 					Button("Save", action: save)
+						.disabled(disableSaveButton)
 				}
 			}
 			.padding([.horizontal, .bottom])
@@ -73,6 +88,8 @@ struct ContentView: View {
 				Button("Unsharp Mask") { setFilter(CIFilter.unsharpMask()) }
 				Button("Vignette") { setFilter(CIFilter.vignette()) }
 				Button("X Ray") { setFilter(CIFilter.xRay()) }
+				Button("Box Blur") { setFilter(CIFilter.boxBlur()) }
+				Button("Kaleidoscope") { setFilter(CIFilter.kaleidoscope()) }
 				Button("Cancel", role: .cancel) { }
 			}
 		}
@@ -108,10 +125,13 @@ struct ContentView: View {
 			currentFilter.setValue(filterIntensity, forKey: kCIInputIntensityKey)
 		}
 		if inputKeys.contains(kCIInputRadiusKey) {
-			currentFilter.setValue(filterIntensity * 200, forKey: kCIInputRadiusKey)
+			currentFilter.setValue(filterRadius * 200, forKey: kCIInputRadiusKey)
 		}
 		if inputKeys.contains(kCIInputScaleKey) {
 			currentFilter.setValue(filterIntensity * 10, forKey: kCIInputScaleKey)
+		}
+		if inputKeys.contains(kCIInputAngleKey) {
+			currentFilter.setValue(filterRadius * 10, forKey: kCIInputAngleKey)
 		}
 		
 		guard let outputImage = currentFilter.outputImage else { return }

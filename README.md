@@ -70,3 +70,4 @@ In this project I'm going to follow [100 Days of Swift UI tutorial (challange)](
 - Day 64 - 22 Oct 2023
 - Day 65 - 23 Oct 2023
 - Day 66 - 24 Oct 2023
+- Day 67 - 25 Oct 2023 *(Project 13 compleated - Instafilter)*
