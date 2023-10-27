@@ -5,93 +5,70 @@
 //  Created by Adam Tokarski on 26/10/2023.
 //
 
+import LocalAuthentication
+import MapKit
 import SwiftUI
 
-struct User: Identifiable, Comparable {
-	let id = UUID()
-	let firstName: String
-	let lastName: String
-	
-	static func < (lhs: User, rhs: User) -> Bool {
-		lhs.lastName < rhs.lastName
-	}
-}
-
-enum LoadingState {
-	case loading
-	case success
-	case failed
-}
-
-struct LoadingView: View {
-	var body: some View {
-		Text("Loading...")
-	}
-}
-
-struct SuccessView: View {
-	var body: some View {
-		Text("Succes!")
-	}
-}
-
-struct FailedView: View {
-	var body: some View {
-		Text("Failed.")
-	}
+struct Location: Identifiable {
+	var id = UUID()
+	let name: String
+	let coordinate: CLLocationCoordinate2D
 }
 
 struct ContentView: View {
-	var loadingState = LoadingState.loading
+	@State private var isUnlocked = false
+	@State private var mapCameraPosition = MapCameraPosition.region(
+		MKCoordinateRegion(
+			center: CLLocationCoordinate2D(latitude: 50.1, longitude: 18.22),
+			span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1))
+	)
+	
+	let locations = [
+		Location(name: "Pinezka 1", coordinate: CLLocationCoordinate2D(latitude: 50.1, longitude: 18.22)),
+		Location(name: "Pinezka 2", coordinate: CLLocationCoordinate2D(latitude: 50.13, longitude: 18.23)),
+		Location(name: "Pinezka 3", coordinate: CLLocationCoordinate2D(latitude: 50.08, longitude: 18.21))
+	]
 	
 	var body: some View {
-		switch loadingState {
-		case .loading:
-			LoadingView()
-		case .success:
-			SuccessView()
-		case .failed:
-			FailedView()
+		Map(initialPosition: mapCameraPosition) {
+			if isUnlocked {
+				ForEach(locations) { location in
+					Annotation(location.name, coordinate: location.coordinate) {
+						Circle()
+							.stroke(.red, lineWidth: 3)
+							.frame(width: 44, height: 44)
+							.onTapGesture {
+								print(location.name)
+							}
+						
+					}
+				}
+			}
 		}
+		.onAppear(perform: authenticate)
 	}
 	
-// 2
-//	var body: some View {
-//		Text("Hello, World!")
-//			.onTapGesture {
-//				let str = ""
-//				let url = getDocumentsDirectory().appendingPathComponent("message.txt")
-//				
-//				do {
-//					try str.write(to: url, atomically: true, encoding: .utf8)
-//
-//					let input: String = FileManager.default.decode("message.txt")
-//					print(input)
-//					
-//				} catch {
-//					print(error.localizedDescription)
-//				}
-//			}
-//	}
-//	
-//	private func getDocumentsDirectory() -> URL {
-//		let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-//		return paths[0]
-//	}
-	
-// 1
-//	let users = [
-//		User(firstName: "Jan", lastName: "Kowalski"),
-//		User(firstName: "Spejson", lastName: "Puchacki"),
-//		User(firstName: "Bob", lastName: "Budowniczy")
-//	].sorted()
-//    var body: some View {
-//		List(users) { user in
-//			Text("\(user.firstName) \(user.lastName)")
-//		}
-//    }
+	private func authenticate() {
+		let context = LAContext()
+		var error: NSError?
+		
+		if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
+			let reason = "We need to unlock your data"
+			
+			context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { success, authenticationError in
+				
+				if success {
+					isUnlocked = true
+				} else {
+					// failure
+				}
+			}
+		} else {
+			// no biometry
+		}
+	}
 }
 
 #Preview {
-    ContentView()
+	ContentView()
 }
