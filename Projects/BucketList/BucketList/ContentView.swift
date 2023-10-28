@@ -5,66 +5,84 @@
 //  Created by Adam Tokarski on 26/10/2023.
 //
 
-import LocalAuthentication
 import MapKit
 import SwiftUI
 
-struct Location: Identifiable {
-	var id = UUID()
-	let name: String
-	let coordinate: CLLocationCoordinate2D
-}
-
 struct ContentView: View {
-	@State private var isUnlocked = false
-	@State private var mapCameraPosition = MapCameraPosition.region(
+	private static let initLat = 50.09
+	private static let initLon = 18.22
+	
+	@State private var mapCameraPosition: MapCameraPosition = .region(
 		MKCoordinateRegion(
-			center: CLLocationCoordinate2D(latitude: 50.1, longitude: 18.22),
+			center: CLLocationCoordinate2D(latitude: initLat, longitude: initLon),
 			span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1))
 	)
-	
-	let locations = [
-		Location(name: "Pinezka 1", coordinate: CLLocationCoordinate2D(latitude: 50.1, longitude: 18.22)),
-		Location(name: "Pinezka 2", coordinate: CLLocationCoordinate2D(latitude: 50.13, longitude: 18.23)),
-		Location(name: "Pinezka 3", coordinate: CLLocationCoordinate2D(latitude: 50.08, longitude: 18.21))
-	]
+	@State private var cameraCenter = CLLocationCoordinate2D(latitude: initLat, longitude: initLon)
+	@State private var locations: [Location] = []
+	@State private var selectedPlace: Location?
 	
 	var body: some View {
-		Map(initialPosition: mapCameraPosition) {
-			if isUnlocked {
+		ZStack {
+			Map(position: $mapCameraPosition) {
 				ForEach(locations) { location in
 					Annotation(location.name, coordinate: location.coordinate) {
-						Circle()
-							.stroke(.red, lineWidth: 3)
+						Image(systemName: "star.circle")
+							.resizable()
+							.foregroundStyle(.red)
 							.frame(width: 44, height: 44)
+							.background(.white)
+							.clipShape(.circle)
 							.onTapGesture {
-								print(location.name)
+								selectedPlace = location
 							}
-						
 					}
 				}
 			}
-		}
-		.onAppear(perform: authenticate)
-	}
-	
-	private func authenticate() {
-		let context = LAContext()
-		var error: NSError?
-		
-		if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
-			let reason = "We need to unlock your data"
+			.ignoresSafeArea()
+			.onMapCameraChange { mapCameraUpdateContext in
+				cameraCenter = mapCameraUpdateContext.camera.centerCoordinate
+			}
 			
-			context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { success, authenticationError in
+			Circle()
+				.fill(.blue)
+				.opacity(0.3)
+				.frame(width: 32, height: 32)
+			
+			VStack {
+				Spacer()
 				
-				if success {
-					isUnlocked = true
-				} else {
-					// failure
+				HStack {
+					Spacer()
+					
+					Button {
+						let newLocation = Location(
+							id: UUID(),
+							name: "New location",
+							description: "",
+							latitude: cameraCenter.latitude,
+							longitude: cameraCenter.longitude
+						)
+						
+						locations.append(newLocation)
+						
+					} label: {
+						Image(systemName: "plus")
+					}
+					.padding()
+					.background(.black.opacity(0.75))
+					.foregroundStyle(.white)
+					.font(.title)
+					.clipShape(.circle)
+					.padding(.trailing)
 				}
 			}
-		} else {
-			// no biometry
+		}
+		.sheet(item: $selectedPlace) { place in
+			EditView(location: place) { newLocation in
+				if let index = locations.firstIndex(of: place) {
+					locations[index] = newLocation
+				}
+			}
 		}
 	}
 }
