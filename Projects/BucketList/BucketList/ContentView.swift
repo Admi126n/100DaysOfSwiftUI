@@ -9,6 +9,8 @@ import MapKit
 import SwiftUI
 
 struct ContentView: View {
+//	private static let initLat = 50.09
+//	private static let initLon = 18.22
 	private static let initLat = 50.09
 	private static let initLon = 18.22
 	
