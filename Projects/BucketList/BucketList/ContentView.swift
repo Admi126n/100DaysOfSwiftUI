@@ -9,82 +9,69 @@ import MapKit
 import SwiftUI
 
 struct ContentView: View {
-//	private static let initLat = 50.09
-//	private static let initLon = 18.22
-	private static let initLat = 50.09
-	private static let initLon = 18.22
-	
-	@State private var mapCameraPosition: MapCameraPosition = .region(
-		MKCoordinateRegion(
-			center: CLLocationCoordinate2D(latitude: initLat, longitude: initLon),
-			span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1))
-	)
-	@State private var cameraCenter = CLLocationCoordinate2D(latitude: initLat, longitude: initLon)
-	@State private var locations: [Location] = []
-	@State private var selectedPlace: Location?
+	@StateObject private var viewModel = ViewModel()
 	
 	var body: some View {
-		ZStack {
-			Map(position: $mapCameraPosition) {
-				ForEach(locations) { location in
-					Annotation(location.name, coordinate: location.coordinate) {
-						Image(systemName: "star.circle")
-							.resizable()
-							.foregroundStyle(.red)
-							.frame(width: 44, height: 44)
-							.background(.white)
-							.clipShape(.circle)
-							.onTapGesture {
-								selectedPlace = location
-							}
+		if viewModel.isUnlocked {
+			ZStack {
+				Map(position: $viewModel.mapCameraPosition) {
+					ForEach(viewModel.locations) { location in
+						Annotation(location.name, coordinate: location.coordinate) {
+							Image(systemName: "star.circle")
+								.resizable()
+								.foregroundStyle(.red)
+								.frame(width: 44, height: 44)
+								.background(.white)
+								.clipShape(.circle)
+								.onTapGesture {
+									viewModel.selectedPlace = location
+								}
+						}
 					}
 				}
-			}
-			.ignoresSafeArea()
-			.onMapCameraChange { mapCameraUpdateContext in
-				cameraCenter = mapCameraUpdateContext.camera.centerCoordinate
-			}
-			
-			Circle()
-				.fill(.blue)
-				.opacity(0.3)
-				.frame(width: 32, height: 32)
-			
-			VStack {
-				Spacer()
+				.ignoresSafeArea()
+				.onMapCameraChange { mapCameraUpdateContext in
+					viewModel.cameraCenter = mapCameraUpdateContext.camera.centerCoordinate
+				}
 				
-				HStack {
+				Circle()
+					.fill(.blue)
+					.opacity(0.3)
+					.frame(width: 32, height: 32)
+				
+				VStack {
 					Spacer()
 					
-					Button {
-						let newLocation = Location(
-							id: UUID(),
-							name: "New location",
-							description: "",
-							latitude: cameraCenter.latitude,
-							longitude: cameraCenter.longitude
-						)
+					HStack {
+						Spacer()
 						
-						locations.append(newLocation)
-						
-					} label: {
-						Image(systemName: "plus")
+						Button {
+							viewModel.addLocation()
+						} label: {
+							Image(systemName: "plus")
+						}
+						.padding()
+						.background(.black.opacity(0.75))
+						.foregroundStyle(.white)
+						.font(.title)
+						.clipShape(.circle)
+						.padding(.trailing)
 					}
-					.padding()
-					.background(.black.opacity(0.75))
-					.foregroundStyle(.white)
-					.font(.title)
-					.clipShape(.circle)
-					.padding(.trailing)
 				}
 			}
-		}
-		.sheet(item: $selectedPlace) { place in
-			EditView(location: place) { newLocation in
-				if let index = locations.firstIndex(of: place) {
-					locations[index] = newLocation
+			.sheet(item: $viewModel.selectedPlace) { place in
+				EditView(location: place) { newLocation in
+					viewModel.update(location: newLocation)
 				}
 			}
+		} else {
+			Button("Unlock places") {
+				viewModel.authenticate()
+			}
+			.padding()
+			.background(.blue)
+			.foregroundStyle(.white)
+			.clipShape(.capsule)
 		}
 	}
 }
