@@ -10,6 +10,8 @@ import SwiftUI
 
 struct ContentView: View {
 	@StateObject private var viewModel = ViewModel()
+	@State private var showAlert = false
+	@State private var alertMessage = ""
 	
 	var body: some View {
 		if viewModel.isUnlocked {
@@ -49,13 +51,13 @@ struct ContentView: View {
 							viewModel.addLocation()
 						} label: {
 							Image(systemName: "plus")
+								.padding()
+								.background(.black.opacity(0.75))
+								.foregroundStyle(.white)
+								.font(.title)
+								.clipShape(.circle)
+								.padding(.trailing)
 						}
-						.padding()
-						.background(.black.opacity(0.75))
-						.foregroundStyle(.white)
-						.font(.title)
-						.clipShape(.circle)
-						.padding(.trailing)
 					}
 				}
 			}
@@ -66,12 +68,22 @@ struct ContentView: View {
 			}
 		} else {
 			Button("Unlock places") {
-				viewModel.authenticate()
+				viewModel.authenticate { message in
+					if let message = message {
+						alertMessage = message
+						showAlert = true
+					}
+				}
 			}
 			.padding()
 			.background(.blue)
 			.foregroundStyle(.white)
 			.clipShape(.capsule)
+			.alert("Something went wrong", isPresented: $showAlert) {
+				Button("OK") { }
+			} message: {
+				Text(alertMessage)
+			}
 		}
 	}
 }

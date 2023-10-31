@@ -67,7 +67,7 @@ extension ContentView {
 			}
 		}
 		
-		func authenticate() {
+		func authenticate(_ compleationHandler: @escaping (String?) -> ()) {
 			let context = LAContext()
 			var error: NSError?
 			
@@ -81,11 +81,11 @@ extension ContentView {
 							self.isUnlocked = true
 						}
 					} else {
-						// error
+						compleationHandler("Cannot authenticate.")
 					}
 				}
 			} else {
-				// no biometrics
+				compleationHandler("Biometrics not available.")
 			}
 		}
 	}
