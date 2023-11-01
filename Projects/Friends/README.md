@@ -16,6 +16,6 @@ How far you implement this is down to you, but at the very least you should:
 #### Part 2
 Your job today is to expand your app so that it uses Core Data. Your boss just emailed you to say the app is great, but once the JSON has been fetched they really want it to work offline. This means you need to use Core Data to store the information you download, then use your Core Data entities to display the views you designed – you should only need to fetch the data once. You still need to try to fetch the data every time your app loads, just in case it has changed somehow, but if that fetch fails it’s okay because you still have your Core Data back up.
 
-#### Project page
+#### Project pages
 - https://www.hackingwithswift.com/guide/ios-swiftui/5/3/challenge
 - https://www.hackingwithswift.com/100/swiftui/61

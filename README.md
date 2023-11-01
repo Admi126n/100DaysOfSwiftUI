@@ -77,3 +77,4 @@ In this project I'm going to follow [100 Days of Swift UI tutorial (challange)](
 - Day 71 - 29 Oct 2023
 - Day 72 - 30 Oct 2023
 - Day 73 - 31 Oct 2023 *(Project 14 compleated - BucketList)*
+- Day 74 - 1 Nov 2023
