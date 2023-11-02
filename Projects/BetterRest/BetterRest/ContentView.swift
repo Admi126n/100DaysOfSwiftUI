@@ -80,7 +80,7 @@ struct ContentView: View {
                         
                         Picker("Coffee amount", selection: $coffeeAmount) {
                             ForEach(coffeAmounts, id: \.self) {
-                                Text($0 == 1 ? "1 cup" : "\($0) cups")
+                                Text("^[\($0) cup](inflect:true)")
                             }
                         }
                         .labelsHidden()

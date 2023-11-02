@@ -9,9 +9,11 @@ import SwiftUI
 
 fileprivate struct FlagImage: View {
     private let imageName: String
+	private let imageLabel: String
     
-    init(ofCountry imageName: String) {
+	init(ofCountry imageName: String, _ label: String?) {
         self.imageName = imageName
+		self.imageLabel = label ?? "Unknown flag"
     }
     
     var body: some View {
@@ -19,6 +21,7 @@ fileprivate struct FlagImage: View {
             .renderingMode(.original)
             .clipShape(RoundedRectangle(cornerRadius: 10))
             .shadow(radius: 5)
+			.accessibilityLabel(imageLabel)
     }
 }
 
@@ -32,6 +35,20 @@ struct ContentView: View {
                              "Nigeria", "Poland", "Russia", "Spain", "UK", "US"].shuffled()
     
     @State private var correctAnswer = Int.random(in: 0...2)
+	
+	let labels = [
+			"Estonia": "Flag with three horizontal stripes of equal size. Top stripe blue, middle stripe black, bottom stripe white",
+			"France": "Flag with three vertical stripes of equal size. Left stripe blue, middle stripe white, right stripe red",
+			"Germany": "Flag with three horizontal stripes of equal size. Top stripe black, middle stripe red, bottom stripe gold",
+			"Ireland": "Flag with three vertical stripes of equal size. Left stripe green, middle stripe white, right stripe orange",
+			"Italy": "Flag with three vertical stripes of equal size. Left stripe green, middle stripe white, right stripe red",
+			"Nigeria": "Flag with three vertical stripes of equal size. Left stripe green, middle stripe white, right stripe green",
+			"Poland": "Flag with two horizontal stripes of equal size. Top stripe white, bottom stripe red",
+			"Russia": "Flag with three horizontal stripes of equal size. Top stripe white, middle stripe blue, bottom stripe red",
+			"Spain": "Flag with three horizontal stripes. Top thin stripe red, middle thick stripe gold with a crest on the left, bottom thin stripe red",
+			"UK": "Flag with overlapping red and white crosses, both straight and diagonally, on a blue background",
+			"US": "Flag with red and white stripes of equal size, with white stars on a blue background in the top-left corner"
+		]
     
     @State private var score = 0
     @State private var questionsCounter = 0
@@ -73,7 +90,7 @@ struct ContentView: View {
                             
                             
                         } label: {
-                            FlagImage(ofCountry: countries[number])
+                            FlagImage(ofCountry: countries[number], labels[countries[number]])
                         }
                         .rotation3DEffect(tappedFlag == number ? .degrees(animationAmount) : .degrees(0), axis: (x: 1, y: 0, z: 0))
                         .opacity(fade && tappedFlag != number ? 0.25 : 1)

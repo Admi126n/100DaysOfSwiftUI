@@ -31,6 +31,19 @@ struct RatingView: View {
                     }
             }
         }
+		.accessibilityElement()
+		.accessibilityLabel("Rating")
+		.accessibilityValue("^[\(rating) star](inflect: true)")
+		.accessibilityAdjustableAction{ direction in
+			switch direction {
+			case .increment:
+				if rating < maxRating { rating += 1}
+			case .decrement:
+				if rating > 1 { rating -= 1 }
+			default:
+				break
+			}
+		}
     }
     
     private func image(for number: Int) -> Image {
