@@ -77,6 +77,9 @@ fileprivate struct ExpenseCell: View {
             Text(item.amount, format: Expenses.currencyFormat)
                 .amountStyle(for: item.amount)
         }
+		.accessibilityElement()
+		.accessibilityLabel("\(item.name) costs \(item.amount)")
+		.accessibilityHint("\(item.type) expense")
     }
 }
 

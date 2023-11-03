@@ -25,9 +25,11 @@ struct MissionView: View {
                         .scaledToFit()
                         .frame(maxWidth: geometry.size.width * 0.6)
                         .padding(.top)
+						.accessibilityLabel(mission.displayName)
                     
                     VStack(alignment: .leading, spacing: 20) {
                         CustomDivider()
+							.accessibilityHidden(true)
                         
                         VStack(alignment: .leading, spacing: 0) {
                             Text("Mission  Highlights")
@@ -40,6 +42,7 @@ struct MissionView: View {
                         Text(mission.description)
                         
                         CustomDivider()
+							.accessibilityHidden(true)
                         
                         Text("Crew")
                             .font(.title.bold())
@@ -121,6 +124,7 @@ fileprivate struct CrewMemberView: View {
                         RoundedRectangle(cornerRadius: 10)
                             .strokeBorder(.white, lineWidth: 1)
                     }
+					.accessibilityHidden(true)
                 
                 VStack(alignment: .leading) {
                     Text(member.astronaut.name)
