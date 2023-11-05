@@ -11,6 +11,8 @@ struct PhotoData: Identifiable, Comparable, Codable {
 	var id = UUID()
 	let imageData: Data
 	let description: String
+	let latitude: Double
+	let longitude: Double
 	
 	var image: UIImage {
 		UIImage(data: imageData)!

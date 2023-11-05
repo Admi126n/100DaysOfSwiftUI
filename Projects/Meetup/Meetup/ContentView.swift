@@ -10,6 +10,8 @@ import SwiftUI
 extension UIImage: Identifiable { }
 
 struct ContentView: View {
+	let locationFetcher = LocationFetcher()
+	
 	@State private var showingPicker = false
 	@State private var inputImage: UIImage?
 	@State private var photos: [PhotoData] = []
@@ -25,6 +27,7 @@ struct ContentView: View {
 							Image(uiImage: photoData.image)
 								.resizable()
 								.scaledToFit()
+								.clipShape(.rect(cornerRadius: 10))
 								.frame(width: 100, height: 100)
 							
 							Text(photoData.description)
@@ -44,7 +47,13 @@ struct ContentView: View {
 			}
 			.sheet(item: $inputImage) { image in
 				PhotoDescription(image: image) { description in
-					photos.append(PhotoData(imageData: image.jpegData(compressionQuality: 0.8)!, description: description))
+					photos.append(PhotoData(
+						imageData: image.jpegData(compressionQuality: 0.8)!,
+						description: description,
+						latitude: locationFetcher.lastKnownLocation?.latitude ?? 0,
+						longitude: locationFetcher.lastKnownLocation?.longitude ?? 0
+					))
+					
 					save()
 				}
 			}
@@ -56,6 +65,8 @@ struct ContentView: View {
 				} catch {
 					photos = []
 				}
+				
+				locationFetcher.start()
 			}
 		}
 	}
