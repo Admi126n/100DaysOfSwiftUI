@@ -83,3 +83,4 @@ In this project I'm going to follow [100 Days of Swift UI tutorial (challange)](
 - Day 77 - 4 Nov 2023 *(Challange 6 part 1 compleated - Meetup)*
 - Day 78 - 5 Nov 2023 *(Challange 6 part 2 compleated - Meetup)*
 - Day 79 - 6 Now 2023
+- Day 80 - 7 Nov 2023

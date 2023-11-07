@@ -7,61 +7,70 @@
 
 import SwiftUI
 
-@MainActor class User: ObservableObject {
-	@Published var name = "Taylor Swift"
-}
-
-struct EditView: View {
-	@EnvironmentObject var user: User
-	
-	var body: some View {
-		TextField("Name", text: $user.name)
-	}
-}
-
-struct DisplayView: View {
-	@EnvironmentObject var user: User
-	
-	var body: some View {
-		Text(user.name)
-	}
-}
-
-
-struct ContentView: View {
-	@State private var selectedTab = "One"
-	
-	var body: some View {
-		TabView(selection: $selectedTab) {
-			Text("Tab 1")
-				.onTapGesture {
-					selectedTab = "Two"
-				}
-				.tabItem {
-					Label("One", systemImage: "star")
-				}
-				.tag("One")
-			
-			Text("Tab 2")
-				.tabItem {
-					Label("Two", systemImage: "circle")
-				}
-				.tag("Two")
+@MainActor class DelayedUpdater: ObservableObject {
+	var value = 0 {
+		willSet {
+			objectWillChange.send()
 		}
 	}
 	
-// 1
-//	@StateObject var user = User()
-//    var body: some View {
-//        VStack {
-//			EditView()
+	init() {
+		for i in 1...10 {
+			DispatchQueue.main.asyncAfter(deadline: .now() + Double(i)) {
+				self.value += 1
+			}
+		}
+	}
+}
+
+struct ContentView: View {
+	var body: some View {
+		VStack {
+			Image(.example)
+				.interpolation(.none)
+				.resizable()
+				.scaledToFit()
+				.frame(maxHeight: .infinity)
+				.background(.black)
+				.ignoresSafeArea()
+		}
+	}
+	
+// 2
+//	@State private var output = ""
+//	var body: some View {
+//		Text(output)
+//			.task {
+//				await fetchReadings()
+//			}
+//	}
+//	
+//	private func fetchReadings() async {
+//		let fetchTask = Task { () -> String in
+//			let url = URL(string: "https://hws.dev/readings.json")!
+//			let (data, _) = try await URLSession.shared.data(from: url)
+//			let readings = try JSONDecoder().decode([Double].self, from: data)
 //			
-//			DisplayView()
-//        }
-//		.environmentObject(user)
-//    }
+//			return "Found \(readings.count) readings"
+//		}
+//		
+//		let result = await fetchTask.result
+//		
+//		switch result {
+//		case .success(let success):
+//			output = success
+//		case .failure(let failure):
+//			output = "Download error \(failure.localizedDescription)"
+//		}
+//	}
+	
+// 1
+//	@StateObject var updater = DelayedUpdater()
+//	var body: some View {
+//		Text("Value is: \(updater.value)")
+//	}
 }
 
 #Preview {
-    ContentView()
+	ContentView()
 }
