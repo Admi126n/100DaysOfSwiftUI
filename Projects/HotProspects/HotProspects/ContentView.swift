@@ -5,69 +5,113 @@
 //  Created by Adam Tokarski on 06/11/2023.
 //
 
+import SamplePackage
 import SwiftUI
-
-@MainActor class DelayedUpdater: ObservableObject {
-	var value = 0 {
-		willSet {
-			objectWillChange.send()
-		}
-	}
-	
-	init() {
-		for i in 1...10 {
-			DispatchQueue.main.asyncAfter(deadline: .now() + Double(i)) {
-				self.value += 1
-			}
-		}
-	}
-}
+import UserNotifications
 
 struct ContentView: View {
-	var body: some View {
-		VStack {
-			Image(.example)
-				.interpolation(.none)
-				.resizable()
-				.scaledToFit()
-				.frame(maxHeight: .infinity)
-				.background(.black)
-				.ignoresSafeArea()
-		}
+	let possibleNumbers = Array(1...60)
+	
+	var results: String {
+		let selected = possibleNumbers.random(7).sorted()
+		let strings = selected.map(String.init)
+		
+		return strings.joined(separator: ", ")
 	}
 	
-// 2
-//	@State private var output = ""
+	var body: some View {
+		Text(results)
+	}
+	
+	
+// 3
 //	var body: some View {
-//		Text(output)
-//			.task {
-//				await fetchReadings()
+//		VStack {
+//			Button("Request permission") {
+//				UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
+//					if success {
+//						print("Done")
+//					} else if let error = error {
+//						print(error.localizedDescription)
+//					}
+//				}
 //			}
-//	}
-//	
-//	private func fetchReadings() async {
-//		let fetchTask = Task { () -> String in
-//			let url = URL(string: "https://hws.dev/readings.json")!
-//			let (data, _) = try await URLSession.shared.data(from: url)
-//			let readings = try JSONDecoder().decode([Double].self, from: data)
+//			.padding()
 //			
-//			return "Found \(readings.count) readings"
-//		}
-//		
-//		let result = await fetchTask.result
-//		
-//		switch result {
-//		case .success(let success):
-//			output = success
-//		case .failure(let failure):
-//			output = "Download error \(failure.localizedDescription)"
+//			Button("Schedule notification") {
+//				let content = UNMutableNotificationContent()
+//				content.title = "Feed the dogs"
+//				content.subtitle = "They look hungry"
+//				content.sound = UNNotificationSound.default
+//				
+//				let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
+//				
+//				let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+//				
+//				UNUserNotificationCenter.current().add(request)
+//			}
+//			.padding()
 //		}
 //	}
 	
-// 1
-//	@StateObject var updater = DelayedUpdater()
+	
+// 2
 //	var body: some View {
-//		Text("Value is: \(updater.value)")
+//		List {
+//			Text("Taylor Swift")
+//				.swipeActions {
+//					Button(role: .destructive) {
+//						print("Deleting")
+//					} label: {
+//						Label("Delete", systemImage: "minus.circle")
+//					}
+//				}
+//				.swipeActions {
+//					Button {
+//						print("Done")
+//					} label: {
+//						Label("Done", systemImage: "checkmark")
+//					}
+//					.tint(.green)
+//				}
+//				.swipeActions(edge: .leading, allowsFullSwipe: false) {
+//					Button {
+//						print("Pinning")
+//					} label: {
+//						Label("Pin", systemImage: "pin")
+//					}
+//					.tint(.orange)
+//				}
+//		}
+//	}
+	
+	
+// 1
+//	@State private var backgroundColor: Color = .red
+//	var body: some View {
+//		VStack {
+//			Text("Hello, world")
+//				.padding()
+//				.background(backgroundColor)
+//			
+//			Text("Choose color")
+//				.padding()
+//				.contextMenu {
+//					Button(role: .destructive) {
+//						backgroundColor = .red
+//					} label: {
+//						Label("Red", systemImage: "checkmark.circle.fill")
+//					}
+//					
+//					Button("Green") {
+//						backgroundColor = .green
+//					}
+//					
+//					Button("Blue") {
+//						backgroundColor = .blue
+//					}
+//				}
+//		}
 //	}
 }
 
