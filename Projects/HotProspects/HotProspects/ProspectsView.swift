@@ -5,6 +5,7 @@
 //  Created by Adam Tokarski on 09/11/2023.
 //
 
+import CodeScanner
 import SwiftUI
 
 struct ProspectsView: View {
@@ -15,6 +16,8 @@ struct ProspectsView: View {
 	}
 	
 	@EnvironmentObject var prospects: Prospects
+	@State private var showingScanner = false
+	
 	let filter: FilterType
 	
 	var title: String {
@@ -50,19 +53,54 @@ struct ProspectsView: View {
 						Text(prospect.emailAddress)
 							.foregroundStyle(.secondary)
 					}
+					.swipeActions {
+						if prospect.isContacted {
+							Button {
+								prospects.toggle(prospect)
+							} label: {
+								Label("Mark uncontacted", systemImage: "person.crop.circle.badge.xmark")
+							}
+							.tint(.blue)
+						} else {
+							Button {
+								prospects.toggle(prospect)
+							} label: {
+								Label("Mark contacted", systemImage: "person.crop.circle.fill.badge.checkmark")
+							}
+							.tint(.green)
+						}
+					}
 				}
 			}
 			.navigationTitle(title)
 			.toolbar {
 				Button {
-					let prospect = Prospect()
-					prospect.name = "Paul Hudson"
-					prospect.emailAddress = "paul@hackingwithswift.com"
-					prospects.people.append(prospect)
+					showingScanner = true
 				} label: {
 					Label("Scan", systemImage: "qrcode.viewfinder")
 				}
 			}
+			.sheet(isPresented: $showingScanner) {
+				CodeScannerView(codeTypes: [.qr], simulatedData: "Paul Hudson\npaul@hackingwithswift.com", completion: handleScan)
+			}
+		}
+	}
+	
+	private func handleScan(result: Result<ScanResult, ScanError>) {
+		showingScanner = false
+		
+		switch result {
+		case .success(let success):
+			let details = success.string.components(separatedBy: "\n")
+			guard details.count == 2 else { return }
+			
+			let person = Prospect()
+			person.name = details[0]
+			person.emailAddress = details[1]
+			
+			prospects.people.append(person)
+		case .failure(let failure):
+			print(failure.localizedDescription)
 		}
 	}
 }
