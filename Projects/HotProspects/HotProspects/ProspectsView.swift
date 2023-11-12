@@ -10,6 +10,11 @@ import SwiftUI
 import UserNotifications
 
 struct ProspectsView: View {
+	private enum SortingType {
+		case name
+		case date
+	}
+	
 	enum FilterType {
 		case none
 		case contacted
@@ -18,6 +23,8 @@ struct ProspectsView: View {
 	
 	@EnvironmentObject var prospects: Prospects
 	@State private var showingScanner = false
+	@State private var showingDialog = false
+	@State private var sortingType: SortingType = .name
 	
 	let filter: FilterType
 	
@@ -46,13 +53,20 @@ struct ProspectsView: View {
 	var body: some View {
 		NavigationStack {
 			List {
-				ForEach(filteredProspects) { prospect in
-					VStack(alignment: .leading) {
-						Text(prospect.name)
-							.font(.headline)
+				ForEach(filteredProspects.sorted(by: sorting)) { prospect in
+					HStack {
+						if filter == .none {
+							Image(systemName: prospect.isContacted ? "person.crop.circle.badge.checkmark" : "person.crop.circle.badge.xmark")
+								.font(.title)
+						}
 						
-						Text(prospect.emailAddress)
-							.foregroundStyle(.secondary)
+						VStack(alignment: .leading) {
+							Text(prospect.name)
+								.font(.headline)
+							
+							Text(prospect.emailAddress)
+								.foregroundStyle(.secondary)
+						}
 					}
 					.swipeActions {
 						if prospect.isContacted {
@@ -82,14 +96,28 @@ struct ProspectsView: View {
 			}
 			.navigationTitle(title)
 			.toolbar {
-				Button {
-					showingScanner = true
-				} label: {
-					Label("Scan", systemImage: "qrcode.viewfinder")
+				ToolbarItem(placement: .topBarTrailing) {
+					Button {
+						showingScanner = true
+					} label: {
+						Label("Scan", systemImage: "qrcode.viewfinder")
+					}
+				}
+				
+				ToolbarItem(placement: .topBarLeading) {
+					Button {
+						showingDialog = true
+					} label: {
+						Label("Sort", systemImage: "arrow.up.arrow.down")
+					}
 				}
 			}
 			.sheet(isPresented: $showingScanner) {
 				CodeScannerView(codeTypes: [.qr], simulatedData: "Paul Hudson\npaul@hackingwithswift.com", completion: handleScan)
+			}
+			.confirmationDialog("Sort by", isPresented: $showingDialog) {
+				Button("Name") { sortingType = .name }
+				Button("Date") { sortingType = .date }
 			}
 		}
 	}
@@ -123,8 +151,8 @@ struct ProspectsView: View {
 			
 			var dateComponents = DateComponents()
 			dateComponents.hour = 9
-			let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
-//			let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
+//			let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
+			let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
 			
 			let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
 			center.add(request)
@@ -142,6 +170,15 @@ struct ProspectsView: View {
 					}
 				}
 			}
+		}
+	}
+	
+	private func sorting(_ lhs: Prospect, _ rhs: Prospect) -> Bool {
+		switch sortingType {
+		case .name:
+			return lhs.name < rhs.name
+		case .date:
+			return lhs.addedDate < rhs.addedDate
 		}
 	}
 }

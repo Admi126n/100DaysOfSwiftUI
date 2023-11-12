@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6603910E2B00FA870099F2BE /* FileManager-DocumentsDirectory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6603910D2B00FA870099F2BE /* FileManager-DocumentsDirectory.swift */; };
 		6644394F2AFF8F6F00BD56E0 /* ImageSaver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6644394E2AFF8F6F00BD56E0 /* ImageSaver.swift */; };
 		668EC9DC2AF8D7CF00D09732 /* HotProspectsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668EC9DB2AF8D7CF00D09732 /* HotProspectsApp.swift */; };
 		668EC9DE2AF8D7CF00D09732 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668EC9DD2AF8D7CF00D09732 /* ContentView.swift */; };
@@ -19,6 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6603910D2B00FA870099F2BE /* FileManager-DocumentsDirectory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager-DocumentsDirectory.swift"; sourceTree = "<group>"; };
 		6644394E2AFF8F6F00BD56E0 /* ImageSaver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSaver.swift; sourceTree = "<group>"; };
 		668EC9D82AF8D7CF00D09732 /* HotProspects.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HotProspects.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		668EC9DB2AF8D7CF00D09732 /* HotProspectsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotProspectsApp.swift; sourceTree = "<group>"; };
@@ -71,6 +73,7 @@
 				6644394E2AFF8F6F00BD56E0 /* ImageSaver.swift */,
 				668EC9DF2AF8D7D000D09732 /* Assets.xcassets */,
 				668EC9E12AF8D7D000D09732 /* Preview Content */,
+				6603910D2B00FA870099F2BE /* FileManager-DocumentsDirectory.swift */,
 			);
 			path = HotProspects;
 			sourceTree = "<group>";
@@ -160,6 +163,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				669265CA2AFCF5210023FB66 /* MeView.swift in Sources */,
+				6603910E2B00FA870099F2BE /* FileManager-DocumentsDirectory.swift in Sources */,
 				6644394F2AFF8F6F00BD56E0 /* ImageSaver.swift in Sources */,
 				669265CC2AFCF7110023FB66 /* Prospect.swift in Sources */,
 				669265C82AFCF5180023FB66 /* ProspectsView.swift in Sources */,
