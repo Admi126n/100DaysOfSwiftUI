@@ -16,7 +16,13 @@ extension View {
 }
 
 struct ContentView: View {
+	let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+	
+	@Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
+	@Environment(\.scenePhase) var scenePhase
 	@State private var cards = Array(repeating: Card.example, count: 10)
+	@State private var isActive = true
+	@State private var timeRamaining = 100
 	
 	var body: some View {
 		ZStack {
@@ -25,6 +31,14 @@ struct ContentView: View {
 				.ignoresSafeArea()
 			
 			VStack {
+				Text("Time: \(timeRamaining)")
+					.font(.largeTitle)
+					.foregroundStyle(.white)
+					.padding(.horizontal, 20)
+					.padding(.vertical, 5)
+					.background(.black.opacity(0.75))
+					.clipShape(.capsule)
+				
 				ZStack {
 					ForEach(0..<cards.count, id: \.self) { index in
 						CardView(card: cards[index]) {
@@ -35,12 +49,66 @@ struct ContentView: View {
 						.stacked(at: index, in: cards.count)
 					}
 				}
+				.allowsTightening(timeRamaining > 0)
+				
+				if cards.isEmpty {
+					Button("Start again", action: resetCards)
+						.padding()
+						.background(.white)
+						.foregroundStyle(.black)
+						.clipShape(.capsule)
+				}
 			}
+			
+			if differentiateWithoutColor {
+				VStack {
+					Spacer()
+					
+					HStack {
+						Image(systemName: "xmark.circle")
+							.padding()
+							.background(.black.opacity(0.7))
+							.clipShape(.circle)
+						
+						Spacer()
+						
+						Image(systemName: "checkmark.circle")
+							.padding()
+							.background(.black.opacity(0.7))
+							.clipShape(.circle)
+					}
+					.foregroundStyle(.white)
+					.font(.largeTitle)
+					.padding()
+				}
+			}
+		}
+		.onReceive(timer) { time in
+			guard isActive else { return }
+			
+			if timeRamaining > 0 {
+				timeRamaining -= 1
+			}
+		}
+		.onChange(of: scenePhase) {
+			guard !cards.isEmpty else { return }
+			
+			isActive = scenePhase == .active
 		}
 	}
 	
 	private func removeCard(at index: Int) {
 		cards.remove(at: index)
+		
+		if cards.isEmpty {
+			isActive = false
+		}
+	}
+	
+	private func resetCards() {
+		cards = Array(repeating: Card.example, count: 10)
+		timeRamaining = 100
+		isActive = true
 	}
 }
 
