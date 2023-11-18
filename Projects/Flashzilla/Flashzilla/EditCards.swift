@@ -49,17 +49,15 @@ struct EditCards: View {
 	}
 	
 	private func loadData() {
-		if let data = UserDefaults.standard.data(forKey: "Cards") {
-			if let decoded = try? JSONDecoder().decode([Card].self, from: data) {
-				cards = decoded
-			}
+		if let loadedCards: [Card] = FileManager.loadData(from: "Cards") {
+			cards = loadedCards
+		} else {
+			cards = []
 		}
 	}
 	
 	private func save() {
-		if let data = try? JSONEncoder().encode(cards) {
-			UserDefaults.standard.set(data, forKey: "Cards")
-		}
+		FileManager.save(cards, to: "Cards")
 	}
 	
 	private func addCard() {
@@ -69,6 +67,11 @@ struct EditCards: View {
 		guard !trimmedPrompt.isEmpty && !trimmedAnswer.isEmpty else { return }
 		
 		let card = Card(prompt: trimmedPrompt, answer: trimmedAnswer)
+		withAnimation {
+			newPrompt = ""
+			newAnswer = ""
+		}
+		
 		cards.insert(card, at: 0)
 		save()
 	}

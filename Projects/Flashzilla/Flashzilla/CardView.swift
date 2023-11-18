@@ -7,9 +7,19 @@
 
 import SwiftUI
 
+fileprivate extension RoundedRectangle {
+	func fillCardDepending(on offset: CGSize) -> some View {
+		if offset.width != 0 {
+			return self.fill(offset.width > 0 ? .green : .red)
+		} else {
+			return self.fill(.white)
+		}
+	}
+}
+
 struct CardView: View {
 	let card: Card
-	var removal: (() -> Void)? = nil
+	var removal: ((Bool) -> Void)? = nil
 	
 	@Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
 	@Environment(\.accessibilityVoiceOverEnabled) var voiceOverEnabled
@@ -28,7 +38,7 @@ struct CardView: View {
 					differentiateWithoutColor
 					? nil
 					: RoundedRectangle(cornerRadius: 25, style: .continuous)
-						.fill(offset.width > 0 ? .green : .red)
+						.fillCardDepending(on: offset)
 				)
 				.shadow(radius: 10)
 			
@@ -71,7 +81,7 @@ struct CardView: View {
 							feedback.notificationOccurred(.error)
 						}
 						
-						removal?()
+						removal?(offset.width > 0)
 					} else {
 						offset = .zero
 					}

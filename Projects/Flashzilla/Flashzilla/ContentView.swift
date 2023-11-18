@@ -8,7 +8,11 @@
 import SwiftUI
 
 extension View {
-	func stacked(at position: Int, in total: Int) -> some View {
+	func stacked(at position: Int?, in total: Int) -> some View {
+		guard let position = position else {
+			return self.offset()
+		}
+		
 		let offset = Double(total - position)
 		
 		return self.offset(y: offset * 10)
@@ -42,15 +46,15 @@ struct ContentView: View {
 					.clipShape(.capsule)
 				
 				ZStack {
-					ForEach(0..<cards.count, id: \.self) { index in
-						CardView(card: cards[index]) {
+					ForEach(cards) { card in
+						CardView(card: card) { correct in
 							withAnimation {
-								removeCard(at: index)
+								remove(card, if: correct)
 							}
 						}
-						.stacked(at: index, in: cards.count)
-						.allowsTightening(index == cards.count - 1)
-						.accessibilityHidden(index < cards.count - 1)
+						.stacked(at: cards.firstIndex(of: card), in: cards.count)
+						.allowsHitTesting(card == cards.last)
+						.accessibilityHidden(card != cards.last)
 					}
 				}
 				.allowsTightening(timeRamaining > 0)
@@ -77,7 +81,7 @@ struct ContentView: View {
 							.clipShape(.circle)
 					}
 				}
-			
+				
 				Spacer()
 			}
 			.foregroundStyle(.white)
@@ -91,7 +95,7 @@ struct ContentView: View {
 					HStack {
 						Button {
 							withAnimation {
-								removeCard(at: cards.count - 1)
+								remove(cards.last, if: false)
 							}
 						} label: {
 							Image(systemName: "xmark.circle")
@@ -106,7 +110,7 @@ struct ContentView: View {
 						
 						Button {
 							withAnimation {
-								removeCard(at: cards.count - 1)
+								remove(cards.last, if: true)
 							}
 						} label: {
 							Image(systemName: "checkmark.circle")
@@ -140,17 +144,24 @@ struct ContentView: View {
 	}
 	
 	private func loadData() {
-		if let data = UserDefaults.standard.data(forKey: "Cards") {
-			if let decoded = try? JSONDecoder().decode([Card].self, from: data) {
-				cards = decoded
-			}
+		if let loadedCards: [Card] = FileManager.loadData(from: "Cards") {
+			cards = loadedCards
+		} else {
+			cards = []
 		}
 	}
 	
-	private func removeCard(at index: Int) {
-		guard index >= 0 else { return }
+	private func remove(_ card: Card?, if correct: Bool) {
+		guard let card = card else { return }
 		
-		cards.remove(at: index)
+		if let index = cards.firstIndex(of: card) {
+			if correct {
+				cards.remove(at: index)
+			} else {
+				cards.remove(at: index)
+				cards.insert(card.copy, at: 0)
+			}
+		}
 		
 		if cards.isEmpty {
 			isActive = false
