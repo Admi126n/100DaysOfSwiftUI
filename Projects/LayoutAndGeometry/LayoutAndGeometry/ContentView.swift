@@ -17,65 +17,83 @@ extension VerticalAlignment {
 	static let midAccountAndName = VerticalAlignment(MidAccountAndName.self)
 }
 
-struct ContentView: View {
-    var body: some View {
-		HStack(alignment: .midAccountAndName) {
-			VStack {
-				Text("@twostraws")
-					.alignmentGuide(.midAccountAndName) { d in
-						d[VerticalAlignment.center]
-					}
-				
-				Image(.example)
-					.resizable()
-					.scaledToFit()
-					.frame(width: 64, height: 64)
-			}
+struct OuterView: View {
+	var body: some View {
+		VStack {
+			Text("Top")
 			
-			VStack {
-				Text("Full name:")
-				
-				Text("Paul Hudson")
-					.font(.largeTitle)
-					.alignmentGuide(.midAccountAndName) { d in
-						d[VerticalAlignment.center]
+			InnerView()
+				.background(.green)
+			
+			Text("Botton")
+		}
+	}
+}
+
+struct InnerView: View {
+	var body: some View {
+		HStack {
+			Text("Left")
+			
+			GeometryReader { geo in
+				Text("Center")
+					.background(.blue)
+					.onTapGesture {
+						print("Global center: \(geo.frame(in: .global).midX) x \(geo.frame(in: .global).midY)")
+						
+						print("Local center: \(geo.frame(in: .local).midX) x \(geo.frame(in: .local).midY)")
+						
+						print("Custom center: \(geo.frame(in: .named("Custom")).midX) x \(geo.frame(in: .named("Custom")).midY)")
 					}
+			}
+			.background(.orange)
+			
+			Text("Right")
+		}
+	}
+}
+
+struct ContentView: View {
+	let colors: [Color] = [.red, .green, .blue, .orange, .pink, .purple, .yellow]
+	
+	var body: some View {
+		ScrollView(.horizontal, showsIndicators: false) {
+			HStack(spacing: 0) {
+				ForEach(1..<20) { num in
+					GeometryReader { geo in
+						Text("Number \(num)")
+							.font(.largeTitle)
+							.padding()
+							.background(.red)
+							.rotation3DEffect(
+								.degrees(-geo.frame(in: .global).minX) / 8, axis: (x: 0.0, y: 1.0, z: 0.0)
+							)
+							.frame(width: 200, height: 200)
+					}
+					.frame(width: 200, height: 200)
+				}
 			}
 		}
 		
 		
 		
-// 3
-//		VStack(alignment: .leading) {
-//			ForEach(0..<10) { position in
-//				Text("Number \(position)")
-//					.alignmentGuide(.leading) { _ in
-//						Double(position) * -10
+//		GeometryReader { fullView in
+//			ScrollView {
+//				ForEach(0..<50) { index in
+//					GeometryReader { geo in
+//						Text("Row  #\(index)")
+//							.font(.title)
+//							.frame(maxWidth: .infinity)
+//							.background(colors[index % 7])
+//							.rotation3DEffect(
+//								.degrees(geo.frame(in: .global).minY - fullView.size.height / 2) / 5, axis: (x: 0, y: 1, z: 0)
+//							)
 //					}
+//					.frame(height: 40)
+//				}
 //			}
 //		}
-//		.background(.red)
-//		.frame(width: 400, height: 400)
-//		.background(.blue)
-	
-// 2
-//		VStack(alignment: .leading) {
-//			Text("Hello, World!")
-//				.alignmentGuide(.leading) { dimension in
-//					dimension[.trailing]
-//				}
-//			
-//			Text("This is a longer line of text")
-//		}
-//		.background(.red)
-//		.frame(width: 400, height: 400)
-//		.background(.blue)
-
-// 1
-//		Text("Hello, world!")
-//			.frame(width: 300, height: 300, alignment: .topLeading)
-//			.background(.green)
-    }
+	}
 }
 
 #Preview {

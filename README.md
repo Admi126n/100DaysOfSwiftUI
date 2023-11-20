@@ -96,3 +96,4 @@ In this project I'm going to follow [100 Days of Swift UI tutorial (challange)](
 - Day 90 - 17 Nov 2023
 - Day 91 - 18 Nov 2023 *(Project 17 compleated - Flashzilla)*
 - Day 92 - 19 Nov 2023
+- Day 93 - 20 Nov 2023
