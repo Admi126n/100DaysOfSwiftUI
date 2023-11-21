@@ -7,95 +7,54 @@
 
 import SwiftUI
 
-extension VerticalAlignment {
-	enum MidAccountAndName: AlignmentID {
-		static func defaultValue(in context: ViewDimensions) -> CGFloat {
-			context[.top]
-		}
+extension View {
+	func scrollColor(_ fullView: GeometryProxy, _ localView: GeometryProxy) -> some View {
+		self.background(Color(
+			hue: min(1, localView.frame(in: .global).midY / fullView.size.height),
+			saturation: min(1, localView.frame(in: .global).midY / fullView.size.height),
+			brightness: 1)
+		)
 	}
 	
-	static let midAccountAndName = VerticalAlignment(MidAccountAndName.self)
-}
-
-struct OuterView: View {
-	var body: some View {
-		VStack {
-			Text("Top")
-			
-			InnerView()
-				.background(.green)
-			
-			Text("Botton")
-		}
+	func scrollRotation(_ fullView: GeometryProxy, _ localView: GeometryProxy) -> some View {
+		self.rotation3DEffect(
+			.degrees(localView.frame(in: .global).minY - fullView.size.height / 2) / 5,
+			axis: (x: 0, y: 1, z: 0)
+		)
+	}
+	
+	func scrollScaleEffect(_ fullView: GeometryProxy, _ localView: GeometryProxy) -> some View {
+		self.scaleEffect(CGSize(
+			width: max(localView.frame(in: .global).minY / fullView.frame(in: .local).midY, 0.5),
+			height: max(localView.frame(in: .global).minY / fullView.frame(in: .local).midY, 0.5))
+		)
 	}
 }
 
-struct InnerView: View {
-	var body: some View {
-		HStack {
-			Text("Left")
-			
-			GeometryReader { geo in
-				Text("Center")
-					.background(.blue)
-					.onTapGesture {
-						print("Global center: \(geo.frame(in: .global).midX) x \(geo.frame(in: .global).midY)")
-						
-						print("Local center: \(geo.frame(in: .local).midX) x \(geo.frame(in: .local).midY)")
-						
-						print("Custom center: \(geo.frame(in: .named("Custom")).midX) x \(geo.frame(in: .named("Custom")).midY)")
-					}
-			}
-			.background(.orange)
-			
-			Text("Right")
-		}
-	}
-}
 
 struct ContentView: View {
 	let colors: [Color] = [.red, .green, .blue, .orange, .pink, .purple, .yellow]
 	
 	var body: some View {
-		ScrollView(.horizontal, showsIndicators: false) {
-			HStack(spacing: 0) {
-				ForEach(1..<20) { num in
+		GeometryReader { fullView in
+			ScrollView {
+				ForEach(0..<50) { index in
 					GeometryReader { geo in
-						Text("Number \(num)")
-							.font(.largeTitle)
-							.padding()
-							.background(.red)
-							.rotation3DEffect(
-								.degrees(-geo.frame(in: .global).minX) / 8, axis: (x: 0.0, y: 1.0, z: 0.0)
-							)
-							.frame(width: 200, height: 200)
+						Text("Row  #\(index)")
+							.font(.title)
+							.frame(maxWidth: .infinity)
+							.scrollColor(fullView, geo)
+							.scrollRotation(fullView, geo)
+							.opacity(geo.frame(in: .global).minY / 200)
+							.scrollScaleEffect(fullView, geo)
 					}
-					.frame(width: 200, height: 200)
+					.frame(height: 40)
 				}
 			}
 		}
-		
-		
-		
-//		GeometryReader { fullView in
-//			ScrollView {
-//				ForEach(0..<50) { index in
-//					GeometryReader { geo in
-//						Text("Row  #\(index)")
-//							.font(.title)
-//							.frame(maxWidth: .infinity)
-//							.background(colors[index % 7])
-//							.rotation3DEffect(
-//								.degrees(geo.frame(in: .global).minY - fullView.size.height / 2) / 5, axis: (x: 0, y: 1, z: 0)
-//							)
-//					}
-//					.frame(height: 40)
-//				}
-//			}
-//		}
 	}
 }
 
 #Preview {
-    ContentView()
+	ContentView()
 }
