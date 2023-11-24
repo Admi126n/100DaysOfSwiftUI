@@ -7,61 +7,49 @@
 
 import SwiftUI
 
-struct User: Identifiable {
-	var id = "Taylor Swift"
-}
-
-struct UserView: View {
-	var body: some View {
-		Group {
-			Text("Name: Paul")
-			Text("Country: England")
-			Text("Pets: Luna and Arya")
-		}
-		.font(.title)
-	}
-}
-
 struct ContentView: View {
-	@State private var searchText = ""
-	let allNames = ["Bob", "Paul", "Steve"]
+	let resorts: [Resort] = Bundle.main.decode("resorts.json")
 	
-	var filteredNames: [String] {
+	@State private var searchText = ""
+	
+	var filteredResorts: [Resort] {
 		if searchText.isEmpty {
-			return allNames
+			return resorts
 		} else {
-			return allNames.filter{ $0.localizedCaseInsensitiveContains(searchText) }
+			return resorts.filter { $0.name.localizedCaseInsensitiveContains(searchText) }
 		}
 	}
 	
 	var body: some View {
-		NavigationStack {
-			List(filteredNames, id: \.self) {
-				Text($0)
+		NavigationSplitView(columnVisibility: .constant(.all)) {
+			List(filteredResorts) { resort in
+				NavigationLink {
+					ResortView(of: resort)
+				} label: {
+					Image(resort.country)
+						.resizable()
+						.scaledToFill()
+						.frame(width: 40, height: 25)
+						.clipShape(.rect(cornerRadius: 5))
+						.overlay(RoundedRectangle(cornerRadius: 5).stroke(.black, lineWidth: 1))
+					
+					VStack(alignment: .leading) {
+						Text(resort.name)
+							.font(.headline)
+						
+						Text("\(resort.runs) runs")
+							.foregroundStyle(.secondary)
+					}
+				}
 			}
-			.searchable(text: $searchText, prompt: "Look for something")
-			.navigationTitle("Searching")
+			.toolbar(removing: .sidebarToggle)
+			.navigationTitle("Resorts")
+			.searchable(text: $searchText, prompt: "Search for a resort")
+		} detail: {
+			WelcomeView()
 		}
+		.navigationSplitViewStyle(.balanced)
 	}
-	
-//	@State private var column: NavigationSplitViewVisibility = .all
-//	var body: some View {
-//		NavigationSplitView(columnVisibility: $column) {
-//			Text("Primary")
-//		} detail: {
-//			Text("Secondary")
-//		}
-//		.navigationSplitViewStyle(.balanced)
-//	}
-	
-//	@Environment(\.horizontalSizeClass) var sizeClass
-//	var body: some View {
-//		if sizeClass == .compact {
-//			VStack(content: UserView.init)
-//		} else {
-//			HStack(content: UserView.init)
-//		}
-//	}
 }
 
 #Preview {
