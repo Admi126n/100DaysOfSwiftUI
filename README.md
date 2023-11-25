@@ -101,3 +101,4 @@ In this project I'm going to follow [100 Days of Swift UI tutorial (challange)](
 - Day 95 - 22 Nov 2023 *(Challange 7 compleated - DiceRoller)*
 - Day 96 - 23 Nov 2023
 - Day 97 - 24 Nov 2023
+- Day 98 - 25 Nov 2023
