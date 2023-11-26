@@ -10,9 +10,16 @@ import Foundation
 class Favorites: ObservableObject {
 	private var resorts: Set<String>
 	private let saveKey = "Favorites"
+	private let dataPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
 	
 	init() {
-		// load saved data
+		if let data = try? Data(contentsOf: dataPath.appending(path: saveKey)) {
+			if let decoded = try? JSONDecoder().decode(Set<String>.self, from: data) {
+				resorts = decoded
+				return
+			}
+		}
+		
 		resorts = []
 	}
 	
@@ -33,6 +40,11 @@ class Favorites: ObservableObject {
 	}
 	
 	func save() {
-		// write out our data
+		do {
+			let encoded = try JSONEncoder().encode(resorts)
+			try encoded.write(to: dataPath.appending(path: saveKey), options: [.atomic])
+		} catch {
+			print(error.localizedDescription)
+		}
 	}
 }
