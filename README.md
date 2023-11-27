@@ -103,3 +103,4 @@ In this project I'm going to follow [100 Days of Swift UI tutorial (challange)](
 - Day 97 - 24 Nov 2023
 - Day 98 - 25 Nov 2023
 - Day 99 - 26 Nov 2023 *(Project 19 compleated - SnowSeeker)*
+- Day 100 - 27 Nov 2023 *(Final exam passed - 94/100 points)*
