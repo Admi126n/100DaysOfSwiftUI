@@ -11,5 +11,5 @@ So, very roughly:
 
 So, if the app chose “Rock” and “Win” the player would need to choose “Paper”, but if the app chose “Rock” and “Lose” the player would need to choose “Scissors”.
 
-#### Project page
+#### Challange page
 - https://www.hackingwithswift.com/guide/ios-swiftui/2/3/challenge

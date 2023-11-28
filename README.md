@@ -1,6 +1,38 @@
-# 100 Days Of Swift UI
+# 100 Days Of SwiftUI
+In this project I followed [100 Days of SwiftUI tutorial (challange)](https://www.hackingwithswift.com/100/swiftui) by Paul Hudson.
 
-In this project I'm going to follow [100 Days of Swift UI tutorial (challange)](https://www.hackingwithswift.com/100/swiftui).
+I completed this course with two breaks due to holiday trips. So I made it in three series of daily work:
+- day 0 - day 26 (8 Aug - 3 Sep)
+- day 27 - day 41 (11 Sep - 25 Sep)
+- day 42 - day 100 (30 Sep - 27 Nov)
+
+### Covered topics
+During this course I've learnt many things about Swift and SwiftUI including:
+- Accessibility
+- Animations
+- CLLocation
+- CoreData
+- CoreImage
+- CoreML
+- Gestures
+- MapKit
+- MVVM
+- Notifications
+- @State, @ObservedObject, @Published, ...
+- Saving and loading data from app bundle
+- Sheets, alerts and confirmation dialogs
+- Timers
+- User Defaults
+- Working with API
+
+And many more.
+
+### Final exam
+On the last day of the course I compleated [Final exam](https://www.hackingwithswift.com/100/swiftui/100) with score 94/100 points.
+
+<p align="center">
+<img src=Documentation/finalExamCertificate.jpg width=70% heihgt=auto />
+</p>
 
 ### Compleated days:
 - Day 0 - 8 Aug 2023

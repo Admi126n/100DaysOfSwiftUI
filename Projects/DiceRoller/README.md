@@ -9,5 +9,5 @@ At the very least you should lets users roll dice, and also let them see results
 - Add haptic feedback when dice are rolled.
 - For a real challenge, make the value rolled by the dice flick through various possible values before settling on the final figure.
 
-#### Project page
+#### Challange page
 - https://www.hackingwithswift.com/guide/ios-swiftui/7/3/challenge

@@ -14,6 +14,6 @@ Breaking it down, you should:
 #### Part 2
 But your boss has come in and demanded a new feature: when you’re viewing a picture that was imported, you should show a map with a pin that marks where they were when that picture was added. It might be on the same screen side by side with the photo, it might be shown or hidden using a segmented control, or perhaps it’s on a different screen – it’s down to you. Regardless, you know how to drop pins, and you also know how to use the center coordinate of map views, so the only thing left to figure out is how to get the user’s location to save alongside their text and image.
 
-#### Project pages
+#### Challange pages
 - https://www.hackingwithswift.com/guide/ios-swiftui/6/3/challenge
 - https://www.hackingwithswift.com/100/swiftui/78

@@ -9,5 +9,5 @@ And if you want to make the app really useful, use Codable and UserDefaults to l
 
 I've also added delete button in detailed view.
 
-#### Project page
+#### Challange page
 - https://www.hackingwithswift.com/guide/ios-swiftui/4/3/challenge
